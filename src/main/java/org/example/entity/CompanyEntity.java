@@ -6,18 +6,27 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class Company implements Serializable {
+public class CompanyEntity implements Serializable {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id;//
     @Column(nullable = false)
     public String name;
     @Column(nullable = false)
     public String corporateReason;
     public String phoneNumber;
-    @CNPJ
+    //@CNPJ
     public String cnpj;
-    public String stateIncription;
+    public String stateInscription;
+    public String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Integer getId() {
         return id;
@@ -59,11 +68,11 @@ public class Company implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public String getStateIncription() {
-        return stateIncription;
+    public String getStateInscription() {
+        return stateInscription;
     }
 
-    public void setStateIncription(String stateIncription) {
-        this.stateIncription = stateIncription;
+    public void setStateInscription(String stateInscription) {
+        this.stateInscription = stateInscription;
     }
 }
