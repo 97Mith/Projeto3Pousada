@@ -5,6 +5,7 @@ import org.example.repository.CompanyRepository;
 import org.example.service.Methods.*;
 
 import javax.swing.*;
+import java.util.List;
 
 public class CompanyService {
     public static void validationCompany(JTextField companyName,
@@ -42,4 +43,8 @@ public class CompanyService {
         }
 
     }
+
+    /*public static List<CompanyEntity> getAll(){
+
+    }*/
 }
