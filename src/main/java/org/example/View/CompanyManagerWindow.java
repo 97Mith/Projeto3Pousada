@@ -159,11 +159,12 @@ public class CompanyManagerWindow extends JFrame {
 
         // Define o tamanho preferencial das colunas
         table.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
-        table.getColumnModel().getColumn(1).setPreferredWidth(150); // Nome
-        table.getColumnModel().getColumn(2).setPreferredWidth(350); // CPF
-        table.getColumnModel().getColumn(3).setPreferredWidth(250); // Telefone
-        table.getColumnModel().getColumn(4).setPreferredWidth(350); // Empresa
-        table.getColumnModel().getColumn(5).setPreferredWidth(328); // Hospedado
+        table.getColumnModel().getColumn(1).setPreferredWidth(170); // Nome
+        table.getColumnModel().getColumn(2).setPreferredWidth(400); // Razão Social
+        table.getColumnModel().getColumn(3).setPreferredWidth(150); // Telefone
+        table.getColumnModel().getColumn(4).setPreferredWidth(160); // Cnpj
+        table.getColumnModel().getColumn(5).setPreferredWidth(130); // I.E
+        table.getColumnModel().getColumn(6).setPreferredWidth(430); // Email
 
 
         GroupLayout gl_panel = new GroupLayout(panel);

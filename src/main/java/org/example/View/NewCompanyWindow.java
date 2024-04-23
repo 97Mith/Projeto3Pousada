@@ -174,7 +174,6 @@ public class NewCompanyWindow extends JFrame {
         btnOk.setBounds(553, 428, 239, 41);
         contentPane.add(btnOk);
 
-        // Aplicar filtro para aceitar apenas números nos campos relevantes
         PlainDocument docCnpj = (PlainDocument) textFieldCnpj.getDocument();
         docCnpj.setDocumentFilter(new NumberOnlyFilter());
 
