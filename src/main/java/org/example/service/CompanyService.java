@@ -59,14 +59,15 @@ public class CompanyService {
             if(!ok){return false;}
         }
 
-        if(company.getId() == null) {
-            List<CompanyEntity> companies = getAll();
-            assert companies != null;
-            ok = CompanyService.isCompanyUnique(companies, corporateReason.getText(), textFieldCnpj.getText());
-            if (!ok) {
-                return false;
-            }
+
+        List<CompanyEntity> companies = getAll();
+        assert companies != null;
+        deleteCompanyById(companies, company.getId());
+        ok = CompanyService.isCompanyUnique(companies, corporateReason.getText(), textFieldCnpj.getText());
+        if (!ok) {
+            return false;
         }
+
 
         company.setName(companyName.getText());
         company.setCorporateReason(corporateReason.getText());
@@ -181,6 +182,9 @@ public class CompanyService {
 
         return tableModel;
 
+    }
+    private static void deleteCompanyById(List<CompanyEntity> companies, Integer id) {
+        companies.removeIf(company -> company.getId().equals(id));
     }
 
     public static boolean isCompanyUnique(List<CompanyEntity> companies, String corporateReason, String cnpj) {

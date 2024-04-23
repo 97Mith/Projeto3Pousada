@@ -4,13 +4,12 @@ import org.example.entity.CompanyEntity;
 import org.example.repository.CompanyRepository;
 import org.example.service.CompanyService;
 
-import java.awt.EventQueue;
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
@@ -18,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.MaskFormatter;
 
 public class CompanyManagerWindow extends JFrame {
 
@@ -148,7 +149,11 @@ public class CompanyManagerWindow extends JFrame {
         JButton update = new JButton("");
 
         table = new JTable();
+        table.setFont(new Font("Arial", Font.BOLD, 12));
         JScrollPane scrollPane = new JScrollPane(table);
+
+        MaskFormatter cnpjFormatter = formatation("##.###.###/####-##");
+        MaskFormatter phoneNumberFormatter = formatation("+55 (##) ##### ####");
 
         List<CompanyEntity> allCompanies = CompanyService.getAll();
         DefaultTableModel model = CompanyService.createCompanyTable(allCompanies);
@@ -165,7 +170,8 @@ public class CompanyManagerWindow extends JFrame {
         table.getColumnModel().getColumn(4).setPreferredWidth(160); // Cnpj
         table.getColumnModel().getColumn(5).setPreferredWidth(130); // I.E
         table.getColumnModel().getColumn(6).setPreferredWidth(430); // Email
-
+        table.getColumnModel().getColumn(3).setCellRenderer(new CNPJCellRenderer(phoneNumberFormatter));
+        table.getColumnModel().getColumn(4).setCellRenderer(new CNPJCellRenderer(cnpjFormatter));
 
         GroupLayout gl_panel = new GroupLayout(panel);
         gl_panel.setHorizontalGroup(
@@ -263,7 +269,7 @@ public class CompanyManagerWindow extends JFrame {
                 new NewCompanyWindow(update, branch).setVisible(true);
 
             } else {
-                JOptionPane.showMessageDialog(null,"Nenhum campo selecionado");
+                JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
             }
         });
 
@@ -273,7 +279,7 @@ public class CompanyManagerWindow extends JFrame {
                 CompanyRepository.delete((int) model.getValueAt(selectedRow, 0));
                 btnPrint.doClick();
             } else {
-                JOptionPane.showMessageDialog(null,"Nenhum campo selecionado");
+                JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
             }
         });
         btnPrint.addActionListener(new ActionListener() {
@@ -286,8 +292,45 @@ public class CompanyManagerWindow extends JFrame {
                 });
             }
         });
-
     }
-
+    private static MaskFormatter formatation(String format){
+        MaskFormatter shape = null;
+        try{
+            shape = new MaskFormatter(format);
+            shape.setValueContainsLiteralCharacters(false);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        return shape;
+    }
 }
+class CNPJCellRenderer extends JLabel implements TableCellRenderer {
+    private final MaskFormatter formatter;
 
+    public CNPJCellRenderer(MaskFormatter formatter) {
+        this.formatter = formatter;
+        setOpaque(true);
+    }
+    @Override
+    public Component getTableCellRendererComponent(
+            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
+    ) {
+        if (value != null) {
+            try {
+                setText(formatter.valueToString(value));
+            } catch (ParseException e) {
+                setText(value.toString());
+            }
+        }
+
+        if (isSelected) {
+            setBackground(table.getSelectionBackground());
+            setForeground(table.getSelectionForeground());
+        } else {
+            setBackground(table.getBackground());
+            setForeground(table.getForeground());
+        }
+
+        return this;
+    }
+}
