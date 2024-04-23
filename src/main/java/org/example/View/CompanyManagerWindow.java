@@ -262,7 +262,17 @@ public class CompanyManagerWindow extends JFrame {
                 new NewCompanyWindow(update, branch).setVisible(true);
 
             } else {
-                JOptionPane.showMessageDialog(null,"erro");
+                JOptionPane.showMessageDialog(null,"Nenhum campo selecionado");
+            }
+        });
+
+        btnDelete.addActionListener(e -> {
+            final int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                CompanyRepository.delete((int) model.getValueAt(selectedRow, 0));
+                btnPrint.doClick();
+            } else {
+                JOptionPane.showMessageDialog(null,"Nenhum campo selecionado");
             }
         });
         btnPrint.addActionListener(new ActionListener() {

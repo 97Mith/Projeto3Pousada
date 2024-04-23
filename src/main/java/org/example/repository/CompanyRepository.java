@@ -92,4 +92,40 @@ public class CompanyRepository {
             return null;
         }
     }
+
+    public static void delete(Integer companyId) {
+        try {
+            System.out.println("Deletando uma companhia");
+
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
+            EntityManager em = emf.createEntityManager();
+
+            em.getTransaction().begin();
+
+            // Localiza a entidade com base no ID
+            CompanyEntity company = em.find(CompanyEntity.class, companyId);
+
+            if (company != null) {
+                em.remove(company); // Remove a entidade
+                em.getTransaction().commit();
+
+                JOptionPane.showMessageDialog(
+                        null, "Empresa deletada com sucesso.",
+                        "Aviso", JOptionPane.INFORMATION_MESSAGE
+                );
+            } else {
+                em.getTransaction().rollback();
+                JOptionPane.showMessageDialog(
+                        null, "Empresa não encontrada.",
+                        "Aviso", JOptionPane.WARNING_MESSAGE
+                );
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    null, "Ocorreu um erro ao deletar a empresa.",
+                    "Aviso", JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
 }
