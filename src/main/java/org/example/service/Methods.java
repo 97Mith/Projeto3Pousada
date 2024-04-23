@@ -13,20 +13,20 @@ public class Methods {
         }
         return true;
     }
-    public static boolean minimumStringSize(int minimum, String string){
+    public static boolean minimumStringSize(int minimum, String string, String field){
         if(string.length() < minimum){
             JOptionPane.showMessageDialog(
-                    null, "O valor deve ter no minimo" + minimum + " caracteres",
+                    null, "O "+field+" deve ter no minimo " + minimum + " caracteres",
                     "Aviso", JOptionPane.ERROR_MESSAGE
             );
             return false;
         }
         return  true;
     }
-    public static boolean maximumStringSize(int maximum, String string){
+    public static boolean maximumStringSize(int maximum, String string, String field){
         if(string.length() > maximum){
             JOptionPane.showMessageDialog(
-                    null, "O valor deve ter no máximo" + maximum + " caracteres",
+                    null, "O "+field+" deve ter no máximo " + maximum + " caracteres",
                     "Aviso", JOptionPane.ERROR_MESSAGE
             );
             return false;

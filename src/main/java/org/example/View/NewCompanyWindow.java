@@ -1,7 +1,6 @@
 package org.example.View;
 
-import java.awt.EventQueue;
-
+import org.example.entity.CompanyEntity;
 import org.example.service.CompanyService;
 
 import javax.swing.*;
@@ -17,7 +16,7 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 
 public class NewCompanyWindow extends JFrame {
-
+    private CompanyEntity companyEntity;
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField textFieldCompanyName;
@@ -49,7 +48,7 @@ public class NewCompanyWindow extends JFrame {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -60,12 +59,14 @@ public class NewCompanyWindow extends JFrame {
                 }
             }
         });
-    }
+    }*/
 
     /**
      * Create the frame.
      */
-    public NewCompanyWindow() {
+    public NewCompanyWindow(JButton update, CompanyEntity company) {
+        companyEntity = company;
+
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 843, 529);
@@ -89,7 +90,9 @@ public class NewCompanyWindow extends JFrame {
         lblName.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldCompanyName = new JTextField();
+
         textFieldCompanyName.setBounds(167, 32, 551, 28);
+        if(company != null) textFieldCompanyName.setText(company.getName());
         textFieldCompanyName.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldCompanyName.setColumns(10);
 
@@ -98,6 +101,7 @@ public class NewCompanyWindow extends JFrame {
         lblRazoSocial.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldCorporateReason = new JTextField();
+        if(company != null) textFieldCorporateReason.setText(company.getCorporateReason());
         textFieldCorporateReason.setBounds(164, 96, 554, 28);
         textFieldCorporateReason.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldCorporateReason.setColumns(10);
@@ -107,6 +111,7 @@ public class NewCompanyWindow extends JFrame {
         lblCnpj.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldCnpj = new JTextField();
+        if(company != null) textFieldCnpj.setText(company.getCnpj());
         textFieldCnpj.setBounds(167, 161, 174, 28);
         textFieldCnpj.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldCnpj.setColumns(10);
@@ -116,6 +121,7 @@ public class NewCompanyWindow extends JFrame {
         lblTel.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldTel = new JTextField();
+        if(company != null) textFieldTel.setText(company.getPhoneNumber());
         textFieldTel.setBounds(167, 229, 174, 28);
         textFieldTel.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldTel.setColumns(10);
@@ -125,6 +131,7 @@ public class NewCompanyWindow extends JFrame {
         lblStateInscription.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldStateInscription = new JTextField();
+        if(company != null) textFieldStateInscription.setText(company.getStateInscription());
         textFieldStateInscription.setBounds(544, 161, 174, 28);
         textFieldStateInscription.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldStateInscription.setColumns(10);
@@ -146,6 +153,7 @@ public class NewCompanyWindow extends JFrame {
         panel.add(lblEmail);
 
         textFieldEmail = new JTextField();
+        if(company != null) textFieldEmail.setText(company.getEmail());
         textFieldEmail.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldEmail.setColumns(10);
         textFieldEmail.setBounds(440, 229, 278, 28);
@@ -186,11 +194,34 @@ public class NewCompanyWindow extends JFrame {
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CompanyService.validationCompany(
-                        textFieldCompanyName, textFieldCorporateReason,
-                        textFieldCnpj, textFieldStateInscription,
-                        textFieldTel, textFieldEmail
-                );
+
+                System.out.println(companyEntity.getId());
+
+                if(companyEntity.getId() == null) {
+                    boolean ok = CompanyService.createCompany(
+                            textFieldCompanyName, textFieldCorporateReason,
+                            textFieldCnpj, textFieldStateInscription,
+                            textFieldTel, textFieldEmail
+                    );
+                    if(ok){
+                        update.doClick(); dispose();
+                    }else{
+                        System.out.println("Campos inválidos");
+                    }
+
+
+                }else {
+                    boolean ok = CompanyService.updateCompany(companyEntity,
+                            textFieldCompanyName, textFieldCorporateReason,
+                            textFieldCnpj, textFieldStateInscription,
+                            textFieldTel, textFieldEmail
+                    );
+                    if(ok){
+                        update.doClick(); dispose();
+                    }else{
+                        System.out.println("Campos inválidos");
+                    }
+                }
             }
         });
     }

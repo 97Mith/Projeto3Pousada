@@ -9,8 +9,46 @@ import javax.swing.*;
 import java.util.List;
 
 public class CompanyRepository {
-    public static void createCompany(CompanyEntity company){
+    public static void update(CompanyEntity company) {
+        EntityManagerFactory emf = null;
+        EntityManager em = null;
         try {
+            System.out.println("Atualizando a compania");
+
+            emf = Persistence.createEntityManagerFactory("unit-jpa");
+            em = emf.createEntityManager();
+
+            em.getTransaction().begin();
+            em.merge(company);
+            em.getTransaction().commit();
+
+            JOptionPane.showMessageDialog(
+                    null, "Empresa atualizada com sucesso.",
+                    "Aviso", JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (Exception e) {
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            JOptionPane.showMessageDialog(
+                    null, "Ocorreu um erro ao atualizar a empresa.",
+                    "Aviso", JOptionPane.ERROR_MESSAGE
+            );
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
+        }
+    }
+
+    public static void create(CompanyEntity company){
+        try {
+            System.out.println("Cadastrando uma compania");
+
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
             EntityManager em = emf.createEntityManager();
 
