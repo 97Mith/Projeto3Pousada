@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.border.LineBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -25,6 +26,7 @@ public class NewCompanyWindow extends JFrame {
     private JTextField textFieldTel;
     private JTextField textFieldStateInscription;
     private JTextField textFieldEmail;
+    private List<CompanyEntity> companies = CompanyService.getAll();
 
     // Classe para filtrar entrada para aceitar apenas números
     class NumberOnlyFilter extends DocumentFilter {
@@ -197,11 +199,14 @@ public class NewCompanyWindow extends JFrame {
                 System.out.println(companyEntity.getId());
 
                 if(companyEntity.getId() == null) {
+                    //boolean ok = CompanyService.isCompanyUnique(companies, textFieldCorporateReason.getText(), textFieldCnpj.getText());
                     boolean ok = CompanyService.createCompany(
                             textFieldCompanyName, textFieldCorporateReason,
                             textFieldCnpj, textFieldStateInscription,
                             textFieldTel, textFieldEmail
                     );
+
+
                     if(ok){
                         update.doClick(); dispose();
                     }else{

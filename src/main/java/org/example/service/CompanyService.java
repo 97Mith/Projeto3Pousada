@@ -59,6 +59,11 @@ public class CompanyService {
             if(!ok){return false;}
         }
 
+        List<CompanyEntity> companies = getAll();
+        assert companies != null;
+        ok = CompanyService.isCompanyUnique(companies, corporateReason.getText(), textFieldCnpj.getText());
+        if(!ok){return false;}
+
         company.setName(companyName.getText());
         company.setCorporateReason(corporateReason.getText());
         company.setCnpj(textFieldCnpj.getText());
@@ -118,6 +123,10 @@ public class CompanyService {
             ok = Methods.maximumStringSize(35, email.getText(), "e-mail");
             if(!ok){return false;}
         }
+        List<CompanyEntity> companies = getAll();
+        assert companies != null;
+        ok = CompanyService.isCompanyUnique(companies, corporateReason.getText(), textFieldCnpj.getText());
+        if(!ok){return false;}
 
         CompanyEntity company = new CompanyEntity();
 
@@ -170,7 +179,35 @@ public class CompanyService {
 
     }
 
-    /*public static List<CompanyEntity> getAll(){
+    public static boolean isCompanyUnique(List<CompanyEntity> companies, String corporateReason, String cnpj) {
 
-    }*/
+        boolean reasonExists = companies.stream()
+                .anyMatch(c -> c.getCorporateReason().equals(corporateReason));
+
+        boolean cnpjExists = companies.stream()
+                .anyMatch(c -> c.getCnpj().equals(cnpj));
+
+        if (reasonExists && cnpjExists) {
+            JOptionPane.showMessageDialog(null,
+                    "A razão social e o CNPJ já existem.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+
+        } else if (reasonExists) {
+            JOptionPane.showMessageDialog(null,
+                    "A razão social já existe.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+
+        } else if (cnpjExists) {
+            JOptionPane.showMessageDialog(null,
+                    "O CNPJ já existe.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 }
