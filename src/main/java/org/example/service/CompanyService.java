@@ -21,7 +21,7 @@ public class CompanyService {
         if(!ok){return false;}
         ok = Methods.minimumStringSize(3, companyName.getText(), "nome");
         if(!ok){return false;}
-        ok = Methods.maximumStringSize(25, textFieldCnpj.getText(), "nome");
+        ok = Methods.maximumStringSize(25, companyName.getText(), "nome");
         if(!ok){return false;}
 
         ok = Methods.isNullOrEmpty(corporateReason.getText(), "razão social");
@@ -59,10 +59,14 @@ public class CompanyService {
             if(!ok){return false;}
         }
 
-        List<CompanyEntity> companies = getAll();
-        assert companies != null;
-        ok = CompanyService.isCompanyUnique(companies, corporateReason.getText(), textFieldCnpj.getText());
-        if(!ok){return false;}
+        if(company.getId() == null) {
+            List<CompanyEntity> companies = getAll();
+            assert companies != null;
+            ok = CompanyService.isCompanyUnique(companies, corporateReason.getText(), textFieldCnpj.getText());
+            if (!ok) {
+                return false;
+            }
+        }
 
         company.setName(companyName.getText());
         company.setCorporateReason(corporateReason.getText());
