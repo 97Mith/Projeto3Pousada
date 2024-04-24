@@ -112,18 +112,15 @@ public class CompanyRepository {
 
     public static void delete(Integer companyId) {
         try {
-            System.out.println("Deletando uma companhia");
-
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
             EntityManager em = emf.createEntityManager();
 
             em.getTransaction().begin();
 
-            // Localiza a entidade com base no ID
             CompanyEntity company = em.find(CompanyEntity.class, companyId);
 
             if (company != null) {
-                em.remove(company); // Remove a entidade
+                em.remove(company);
                 em.getTransaction().commit();
 
                 JOptionPane.showMessageDialog(
