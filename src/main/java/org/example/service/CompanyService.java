@@ -218,4 +218,15 @@ public class CompanyService {
         }
         return true;
     }
+
+    public static List<CompanyEntity> getByName(String name){
+        List<CompanyEntity> companiesSearched = CompanyRepository.findByName(name);
+        if(companiesSearched == null){
+            JOptionPane.showMessageDialog(null,
+                    "Nenhuma empresa encontrada",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+        return companiesSearched;
+    }
 }

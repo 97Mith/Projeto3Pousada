@@ -5,6 +5,7 @@ import org.example.entity.CompanyEntity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.swing.*;
 import java.util.List;
 
@@ -75,6 +76,22 @@ public class CompanyRepository {
             EntityManager em = emf.createEntityManager();
 
             return em.find(CompanyEntity.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<CompanyEntity> findByName(String name) {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
+            EntityManager em = emf.createEntityManager();
+
+            String queryStr = "SELECT c FROM CompanyEntity c WHERE c.name LIKE :name";
+            TypedQuery<CompanyEntity> query = em.createQuery(queryStr, CompanyEntity.class);
+            query.setParameter("name", "%" + name + "%");
+
+            return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -11,7 +11,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.EmptyBorder;
@@ -26,6 +25,7 @@ public class CompanyManagerWindow extends JFrame {
     private JPanel contentPane;
     private JTextField txtSearch;
     private JTable table;
+    private List<CompanyEntity> companiesSearched;
     private static DefaultTableModel model;
 
     public static void main(String[] args) {
@@ -87,9 +87,9 @@ public class CompanyManagerWindow extends JFrame {
         btnNewCompany.setForeground(Color.WHITE);
         btnNewCompany.setBackground(new Color(128, 0, 255));
 
-        JButton btnPrint = new JButton("Atualizar...");
-        btnPrint.setForeground(Color.WHITE);
-        btnPrint.setBackground(new Color(128, 0, 255));
+        JButton btnAtualizate = new JButton("Atualizar...");
+        btnAtualizate.setForeground(Color.WHITE);
+        btnAtualizate.setBackground(new Color(128, 0, 255));
 
         JPanel panel = new JPanel();
 
@@ -119,7 +119,7 @@ public class CompanyManagerWindow extends JFrame {
                                         .addGroup(gl_contentPane.createSequentialGroup()
                                                 .addComponent(btnNewCompany)
                                                 .addGap(18)
-                                                .addComponent(btnPrint, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(btnAtualizate, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                                                 .addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
@@ -138,7 +138,7 @@ public class CompanyManagerWindow extends JFrame {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(btnNewCompany)
-                                        .addComponent(btnPrint)
+                                        .addComponent(btnAtualizate)
                                         .addComponent(btnDelete)
                                         .addComponent(btnEdit))
                                 .addGap(12)
@@ -156,6 +156,10 @@ public class CompanyManagerWindow extends JFrame {
         MaskFormatter phoneNumberFormatter = formatation("+55 (##) ##### ####");
 
         List<CompanyEntity> allCompanies = CompanyService.getAll();
+        if(companiesSearched != null){
+            allCompanies = companiesSearched;
+        }
+        //assert allCompanies != null;
         DefaultTableModel model = CompanyService.createCompanyTable(allCompanies);
 
         table.setModel(model);
@@ -190,8 +194,8 @@ public class CompanyManagerWindow extends JFrame {
         panel.setLayout(gl_panel);
 
         JLabel lblRecord = new JLabel("Total de registros:");
-
-        JLabel lblTotalOfRecords = new JLabel("0");
+        int total = allCompanies.size();
+        JLabel lblTotalOfRecords = new JLabel(String.valueOf(total));
 
         JButton btnOk = new JButton("Ok");
         btnOk.setForeground(Color.WHITE);
@@ -277,12 +281,12 @@ public class CompanyManagerWindow extends JFrame {
             final int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 CompanyRepository.delete((int) model.getValueAt(selectedRow, 0));
-                btnPrint.doClick();
+                btnAtualizate.doClick();
             } else {
                 JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
             }
         });
-        btnPrint.addActionListener(new ActionListener() {
+        btnAtualizate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -290,6 +294,12 @@ public class CompanyManagerWindow extends JFrame {
                 SwingUtilities.invokeLater(() -> {
                     new CompanyManagerWindow().setVisible(true);
                 });
+            }
+        });
+        btnSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                companiesSearched = CompanyService.getByName(txtSearch.getText());
             }
         });
     }
