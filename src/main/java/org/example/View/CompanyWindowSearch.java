@@ -4,6 +4,13 @@ import org.example.entity.CompanyEntity;
 import org.example.repository.CompanyRepository;
 import org.example.service.CompanyService;
 
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,27 +18,21 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.MaskFormatter;
 
-public class CompanyManagerWindow extends JFrame {
+public class CompanyWindowSearch extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField txtSearch;
     private JTable table;
+    private List<CompanyEntity> companiesSearched;
     private static DefaultTableModel model;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    CompanyManagerWindow frame = new CompanyManagerWindow();
+                    CompanyWindowSearch frame = new CompanyWindowSearch("");
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -40,7 +41,7 @@ public class CompanyManagerWindow extends JFrame {
         });
     }
 
-    public CompanyManagerWindow() {
+    public CompanyWindowSearch(String search) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBounds(100, 100, 450, 300);
@@ -154,8 +155,7 @@ public class CompanyManagerWindow extends JFrame {
         MaskFormatter cnpjFormatter = formatation("##.###.###/####-##");
         MaskFormatter phoneNumberFormatter = formatation("+55 (##) ##### ####");
 
-        List<CompanyEntity> allCompanies = CompanyService.getAll();
-        assert allCompanies != null;
+        List<CompanyEntity> allCompanies = CompanyService.getByName(search);
         DefaultTableModel model = CompanyService.createCompanyTable(allCompanies);
 
         table.setModel(model);
@@ -312,33 +312,5 @@ public class CompanyManagerWindow extends JFrame {
         return shape;
     }
 }
-class CNPJCellRenderer extends JLabel implements TableCellRenderer {
-    private final MaskFormatter formatter;
 
-    public CNPJCellRenderer(MaskFormatter formatter) {
-        this.formatter = formatter;
-        setOpaque(true);
-    }
-    @Override
-    public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
-    ) {
-        if (value != null) {
-            try {
-                setText(formatter.valueToString(value));
-            } catch (ParseException e) {
-                setText(value.toString());
-            }
-        }
 
-        if (isSelected) {
-            setBackground(table.getSelectionBackground());
-            setForeground(table.getSelectionForeground());
-        } else {
-            setBackground(table.getBackground());
-            setForeground(table.getForeground());
-        }
-
-        return this;
-    }
-}

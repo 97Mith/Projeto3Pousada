@@ -221,11 +221,13 @@ public class CompanyService {
 
     public static List<CompanyEntity> getByName(String name){
         List<CompanyEntity> companiesSearched = CompanyRepository.findByName(name);
-        if(companiesSearched == null){
+        assert companiesSearched != null;
+        if(companiesSearched.isEmpty()){
             JOptionPane.showMessageDialog(null,
                     "Nenhuma empresa encontrada",
                     "Aviso",
                     JOptionPane.WARNING_MESSAGE);
+            companiesSearched = getAll();
         }
         return companiesSearched;
     }
