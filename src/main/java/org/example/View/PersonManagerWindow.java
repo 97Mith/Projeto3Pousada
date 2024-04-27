@@ -1,5 +1,10 @@
 package org.example.View;
 
+import org.example.entity.CompanyEntity;
+import org.example.entity.PersonEntity;
+import org.example.repository.CompanyRepository;
+import org.example.service.PersonService;
+
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -10,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.List;
 
 public class PersonManagerWindow extends JFrame {
 
@@ -80,9 +86,9 @@ public class PersonManagerWindow extends JFrame {
         btnNewGuest.setForeground(Color.WHITE);
         btnNewGuest.setBackground(new Color(0, 128, 255));
 
-        JButton btnPrint = new JButton("Imprimir...");
-        btnPrint.setForeground(Color.WHITE);
-        btnPrint.setBackground(new Color(0, 128, 255));
+        JButton btnAtualizate = new JButton("Atualizar...");
+        btnAtualizate.setForeground(Color.WHITE);
+        btnAtualizate.setBackground(new Color(0, 128, 255));
 
         JPanel panel = new JPanel();
 
@@ -114,7 +120,7 @@ public class PersonManagerWindow extends JFrame {
                                         .addGroup(gl_contentPane.createSequentialGroup()
                                                 .addComponent(btnNewGuest)
                                                 .addGap(18)
-                                                .addComponent(btnPrint, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(btnAtualizate, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                                                 .addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
@@ -134,7 +140,7 @@ public class PersonManagerWindow extends JFrame {
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(btnNewGuest)
-                                        .addComponent(btnPrint)
+                                        .addComponent(btnAtualizate)
                                         .addComponent(btnDelete)
                                         .addComponent(btnEdit))
                                 .addGap(12)
@@ -146,22 +152,8 @@ public class PersonManagerWindow extends JFrame {
         table = new JTable();
         JScrollPane scrollPane = new JScrollPane(table);
 
-        DefaultTableModel model = new DefaultTableModel();
-
-        model.addColumn("ID");
-        model.addColumn("Nome");
-        model.addColumn("CPF");
-        model.addColumn("Telefone");
-        model.addColumn("Empresa");
-        model.addColumn("Hospedado");
-
-
-        // Exemplo de dados
-        Object[] row1 = {"15","João", "123.456.789-00", "+55 (99) 99999-9999", "Empresa A", "Quarto 2"};
-        Object[] row2 = {"17", "Maria", "987.654.321-00", "+55 (88) 88888-8888", "Empresa B", "Quarto 3"};
-        model.addRow(row1);
-        model.addRow(row2);
-
+        List<PersonEntity> people = PersonService.getAll();
+        DefaultTableModel model = PersonService.createPeopleTable(people);
 
 
         table.setModel(model);
@@ -170,11 +162,12 @@ public class PersonManagerWindow extends JFrame {
 
         // Define o tamanho preferencial das colunas
         table.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
-        table.getColumnModel().getColumn(1).setPreferredWidth(350); // Nome
-        table.getColumnModel().getColumn(2).setPreferredWidth(250); // CPF
-        table.getColumnModel().getColumn(3).setPreferredWidth(250); // Telefone
-        table.getColumnModel().getColumn(4).setPreferredWidth(350); // Empresa
-        table.getColumnModel().getColumn(5).setPreferredWidth(228); // Hospedado
+        table.getColumnModel().getColumn(1).setPreferredWidth(230); // Nome
+        table.getColumnModel().getColumn(2).setPreferredWidth(390); // Sobrenome
+        table.getColumnModel().getColumn(3).setPreferredWidth(230); // Telefone
+        table.getColumnModel().getColumn(4).setPreferredWidth(130); // Quarto
+        table.getColumnModel().getColumn(5).setPreferredWidth(298); // Empresa
+        table.getColumnModel().getColumn(6).setPreferredWidth(170); // Cpf
 
 
         GroupLayout gl_panel = new GroupLayout(panel);
@@ -195,7 +188,8 @@ public class PersonManagerWindow extends JFrame {
 
         JLabel lblRecord = new JLabel("Total de registros:");
 
-        JLabel lblTotalOfRecords = new JLabel("0");
+        int total = people.size();
+        JLabel lblTotalOfRecords = new JLabel(String.valueOf(total));
 
         JButton btnOk = new JButton("Ok");
         btnOk.setForeground(Color.WHITE);
@@ -248,8 +242,31 @@ public class PersonManagerWindow extends JFrame {
         btnNewGuest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                NewPersonWindow newGuestWindow = new NewPersonWindow();
+                PersonEntity personEntity = new PersonEntity();
+                NewPersonWindow newGuestWindow = new NewPersonWindow(personEntity, btnAtualizate);
                 newGuestWindow.setVisible(true);
+            }
+        });
+        btnEdit.addActionListener(e -> {
+            final int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                PersonEntity branch = PersonService.getById((int) model.getValueAt(selectedRow, 0));
+
+                new NewPersonWindow(branch, btnAtualizate).setVisible(true);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
+            }
+        });
+
+        btnAtualizate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+
+                SwingUtilities.invokeLater(() -> {
+                    new PersonManagerWindow().setVisible(true);
+                });
             }
         });
     }

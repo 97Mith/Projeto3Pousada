@@ -196,8 +196,6 @@ public class NewCompanyWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println(companyEntity.getId());
-
                 if(companyEntity.getId() == null) {
                     //boolean ok = CompanyService.isCompanyUnique(companies, textFieldCorporateReason.getText(), textFieldCnpj.getText());
                     boolean ok = CompanyService.createCompany(

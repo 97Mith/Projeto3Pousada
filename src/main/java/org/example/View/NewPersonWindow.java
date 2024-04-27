@@ -8,6 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -28,23 +29,24 @@ public class NewPersonWindow extends JFrame {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    NewPersonWindow frame = new NewPersonWindow();
+                    PersonEntity person = new PersonEntity();
+                    NewPersonWindow frame = new NewPersonWindow(person);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
+    }*/
 
     /**
      * Create the frame.
      */
-    public NewPersonWindow() {
+    public NewPersonWindow(PersonEntity personEntity, JButton atualizate) {
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 791, 586);
@@ -91,6 +93,7 @@ public class NewPersonWindow extends JFrame {
         lblName.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldName = new JTextField();
+        if(personEntity != null) textFieldName.setText(personEntity.getName());
         textFieldName.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldName.setColumns(10);
 
@@ -98,6 +101,7 @@ public class NewPersonWindow extends JFrame {
         lblSurname.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldSurname = new JTextField();
+        if(personEntity != null) textFieldSurname.setText(personEntity.getSurName());
         textFieldSurname.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldSurname.setColumns(10);
 
@@ -105,6 +109,7 @@ public class NewPersonWindow extends JFrame {
         lblCpf.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldCpf = new JTextField();
+        if(personEntity != null) textFieldCpf.setText(personEntity.getCpf());
         textFieldCpf.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldCpf.setColumns(10);
 
@@ -112,6 +117,7 @@ public class NewPersonWindow extends JFrame {
         lblTel.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
         textFieldTel = new JTextField();
+        if(personEntity != null) textFieldTel.setText(personEntity.getPhoneNumber());
         textFieldTel.setFont(new Font("Tahoma", Font.PLAIN, 18));
         textFieldTel.setColumns(10);
 
@@ -238,7 +244,23 @@ public class NewPersonWindow extends JFrame {
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PersonService.persistPerson(textFieldName, textFieldSurname, textFieldCpf, textFieldTel);
+                if(personEntity.getId() == null){
+                    boolean ok = PersonService.persistPerson(textFieldName, textFieldSurname, textFieldCpf, textFieldTel);
+
+                    if(ok){
+                        atualizate.doClick();
+                        dispose();
+                    }else{
+                        System.out.println("Campos invalidos");
+                    }
+                }else{
+                    boolean ok = PersonService.updatePerson(personEntity, textFieldName, textFieldSurname, textFieldCpf, textFieldTel);
+                    if(ok){
+                        atualizate.doClick(); dispose();
+                    }else{
+                        System.out.println("Campos inválidos");
+                    }
+                }
             }
 
         });

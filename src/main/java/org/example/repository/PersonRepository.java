@@ -15,7 +15,7 @@ public class PersonRepository {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.persist(guest);
+        em.merge(guest);
         em.getTransaction().commit();
 
         em.close();
@@ -49,6 +49,9 @@ public class PersonRepository {
             em.getTransaction().rollback();
             return false;
         }
+    }
+    public static void deleteById(List<PersonEntity> people, Integer id) {
+        people.removeIf(company -> company.getId().equals(id));
     }
 }
 

@@ -179,9 +179,7 @@ public class CompanyService {
 
             tableModel.addRow(rowData);
         }
-
         return tableModel;
-
     }
     private static void deleteCompanyById(List<CompanyEntity> companies, Integer id) {
         companies.removeIf(company -> company.getId().equals(id));
