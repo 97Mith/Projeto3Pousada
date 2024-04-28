@@ -257,7 +257,7 @@ public class PersonService {
                 .collect(Collectors.toList());
 
         if(firstIndexString){
-            companyNames.add(0, "Todos");
+            companyNames.add(0, "   -- todos --");
         } else {
             companyNames.add(0, "");
         }
@@ -267,8 +267,8 @@ public class PersonService {
         return comboBoxModel;
     }
 
-    public static List<PersonEntity> getPeopleByName(String name){
-        List<PersonEntity> peopleSearched = PersonRepository.findByName(name);
+    public static List<PersonEntity> getPeopleByNameOrCompanyName(String name, String type){
+        List<PersonEntity> peopleSearched = PersonRepository.findByNameOrCompanyName(name, type);
         assert peopleSearched != null;
         if(peopleSearched.isEmpty()){
             JOptionPane.showMessageDialog(null,

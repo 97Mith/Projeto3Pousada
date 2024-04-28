@@ -1,13 +1,11 @@
 package org.example.repository;
 
-import org.example.entity.CompanyEntity;
 import org.example.entity.PersonEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
-import javax.swing.*;
 import java.util.List;
 
 public class PersonRepository {
@@ -34,14 +32,14 @@ public class PersonRepository {
 
         return em.find(PersonEntity.class, id);
     }
-    public static List<PersonEntity> findByName(String name) {
+    public static List<PersonEntity> findByNameOrCompanyName(String name, String type) {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
             EntityManager em = emf.createEntityManager();
 
-            String queryStr = "SELECT c FROM PersonEntity c WHERE c.name LIKE :name";
+            String queryStr = "SELECT c FROM PersonEntity c WHERE c." + type + " LIKE :" + type;
             TypedQuery<PersonEntity> query = em.createQuery(queryStr, PersonEntity.class);
-            query.setParameter("name", "%" + name + "%");
+            query.setParameter(type, "%" + name + "%");
 
             return query.getResultList();
         } catch (Exception e) {

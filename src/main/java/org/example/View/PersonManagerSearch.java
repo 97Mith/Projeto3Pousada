@@ -38,7 +38,7 @@ public class PersonManagerSearch extends JFrame {
         });
     }*/
 
-    public PersonManagerSearch(String name) {
+    public PersonManagerSearch(String name, String type) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBounds(100, 100, 450, 300);
@@ -153,7 +153,7 @@ public class PersonManagerSearch extends JFrame {
         table.setFont(new Font("Arial", Font.BOLD, 12));
         JScrollPane scrollPane = new JScrollPane(table);
 
-        List<PersonEntity> people = PersonService.getPeopleByName(name);
+        List<PersonEntity> people = PersonService.getPeopleByNameOrCompanyName(name, type);
         DefaultTableModel model = PersonService.createPeopleTable(people);
         MaskFormatter phoneNumberFormatter = formatation("+55 (##) ##### ####");
         MaskFormatter cpfFormatter = formatation("###.###.###-##");
@@ -287,9 +287,17 @@ public class PersonManagerSearch extends JFrame {
         btnSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText());
-                personManagerSearch.setVisible(true);
-                dispose();
+                String selectedCompanyName = (String) comboBoxSearchByCompany.getSelectedItem();
+
+                if (selectedCompanyName != null && selectedCompanyName.trim().equals("-- todos --")) {
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText(), "name");
+                    personManagerSearch.setVisible(true);
+                    dispose();
+                }else{
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(selectedCompanyName, "companyName");
+                    personManagerSearch.setVisible(true);
+                    dispose();
+                }
             }
         });
     }

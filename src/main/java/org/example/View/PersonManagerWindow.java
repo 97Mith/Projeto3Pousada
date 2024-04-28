@@ -287,9 +287,17 @@ public class PersonManagerWindow extends JFrame {
         btnSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText());
-                personManagerSearch.setVisible(true);
-                dispose();
+                String selectedCompanyName = (String) comboBoxSearchByCompany.getSelectedItem();
+
+                if (selectedCompanyName != null && selectedCompanyName.trim().equals("-- todos --")) {
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText(), "name");
+                    personManagerSearch.setVisible(true);
+                    dispose();
+                }else{
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(selectedCompanyName, "companyName");
+                    personManagerSearch.setVisible(true);
+                    dispose();
+                }
             }
         });
     }
