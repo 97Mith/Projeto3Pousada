@@ -249,14 +249,14 @@ public class PersonService {
         }
     }
 
-    public static DefaultComboBoxModel<String> getAllCompanyNames(boolean change) {
+    public static DefaultComboBoxModel<String> getAllCompanyNames(boolean firstIndexString) {
         List<CompanyEntity> companies = CompanyService.getAll();
 
         List<String> companyNames = companies.stream()
                 .map(CompanyEntity::getName)
                 .collect(Collectors.toList());
 
-        if(change){
+        if(firstIndexString){
             companyNames.add(0, "Todos");
         } else {
             companyNames.add(0, "");
