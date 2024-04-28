@@ -18,27 +18,27 @@ import java.util.List;
 
 import static org.example.View.CompanyManagerWindow.formatation;
 
-public class PersonManagerWindow extends JFrame {
+public class PersonManagerSearch extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField txtSearch;
     private JTable table;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    PersonManagerWindow frame = new PersonManagerWindow();
+                    PersonManagerSearch frame = new PersonManagerSearch("Vicente");
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
+    }*/
 
-    public PersonManagerWindow() {
+    public PersonManagerSearch(String name) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBounds(100, 100, 450, 300);
@@ -153,7 +153,7 @@ public class PersonManagerWindow extends JFrame {
         table.setFont(new Font("Arial", Font.BOLD, 12));
         JScrollPane scrollPane = new JScrollPane(table);
 
-        List<PersonEntity> people = PersonService.getAll();
+        List<PersonEntity> people = PersonService.getPeopleByName(name);
         DefaultTableModel model = PersonService.createPeopleTable(people);
         MaskFormatter phoneNumberFormatter = formatation("+55 (##) ##### ####");
         MaskFormatter cpfFormatter = formatation("###.###.###-##");

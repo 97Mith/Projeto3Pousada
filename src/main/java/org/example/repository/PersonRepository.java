@@ -6,6 +6,7 @@ import org.example.entity.PersonEntity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.swing.*;
 import java.util.List;
 
@@ -32,6 +33,21 @@ public class PersonRepository {
         EntityManager em = emf.createEntityManager();
 
         return em.find(PersonEntity.class, id);
+    }
+    public static List<PersonEntity> findByName(String name) {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
+            EntityManager em = emf.createEntityManager();
+
+            String queryStr = "SELECT c FROM PersonEntity c WHERE c.name LIKE :name";
+            TypedQuery<PersonEntity> query = em.createQuery(queryStr, PersonEntity.class);
+            query.setParameter("name", "%" + name + "%");
+
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     public static boolean deletePerson(Integer personId) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");

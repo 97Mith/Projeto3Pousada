@@ -267,5 +267,16 @@ public class PersonService {
         return comboBoxModel;
     }
 
-
+    public static List<PersonEntity> getPeopleByName(String name){
+        List<PersonEntity> peopleSearched = PersonRepository.findByName(name);
+        assert peopleSearched != null;
+        if(peopleSearched.isEmpty()){
+            JOptionPane.showMessageDialog(null,
+                    "Nenhuma pessoa encontrada",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            peopleSearched = getAll();
+        }
+        return peopleSearched;
+    }
 }
