@@ -10,7 +10,7 @@ public class PersonEntity {
     public String name;
     public String surName;
     public Integer bedroomNumber;
-    public Integer companyId;
+    public String companyName;
     public String phoneNumber;
     public String cpf;
 
@@ -42,12 +42,12 @@ public class PersonEntity {
         this.bedroomNumber = bedroomNumber;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getPhoneNumber() {

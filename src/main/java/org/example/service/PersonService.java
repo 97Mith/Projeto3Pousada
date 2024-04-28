@@ -7,14 +7,15 @@ import org.example.repository.PersonRepository;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PersonService {
     public static boolean persistPerson(
             JTextField name,
             JTextField surName,
             JTextField cpf,
-            JTextField phoneNumber
-            //JComboBox companyId
+            JTextField phoneNumber,
+            JComboBox companyNames
             ){
 
         boolean ok = Methods.isNullOrEmpty(name.getText(), "nome");
@@ -62,6 +63,8 @@ public class PersonService {
         person.setSurName(surName.getText());
         person.setCpf(cpf.getText());
         person.setPhoneNumber(phoneNumber.getText());
+        String selectedCompanyName = (String) companyNames.getSelectedItem();
+        person.setCompanyName(selectedCompanyName);
 
         person.setBedroomNumber(0);
 
@@ -73,8 +76,8 @@ public class PersonService {
             JTextField name,
             JTextField surName,
             JTextField cpf,
-            JTextField phoneNumber
-            //JComboBox companyId
+            JTextField phoneNumber,
+            JComboBox companyNames
     ){
 
         boolean ok = Methods.isNullOrEmpty(name.getText(), "nome");
@@ -119,6 +122,8 @@ public class PersonService {
         person.setSurName(surName.getText());
         person.setCpf(cpf.getText());
         person.setPhoneNumber(phoneNumber.getText());
+        String selectedCompanyName = (String) companyNames.getSelectedItem();
+        person.setCompanyName(selectedCompanyName);
 
         person.setBedroomNumber(0);
 
@@ -185,7 +190,7 @@ public class PersonService {
                     peopleTable.getSurName(),
                     peopleTable.getPhoneNumber(),
                     peopleTable.getBedroomNumber(),
-                    peopleTable.getCompanyId(),
+                    peopleTable.getCompanyName(),
                     peopleTable.getCpf()
             };
 
@@ -243,4 +248,24 @@ public class PersonService {
             return false;
         }
     }
+
+    public static DefaultComboBoxModel<String> getAllCompanyNames(boolean change) {
+        List<CompanyEntity> companies = CompanyService.getAll();
+
+        List<String> companyNames = companies.stream()
+                .map(CompanyEntity::getName)
+                .collect(Collectors.toList());
+
+        if(change){
+            companyNames.add(0, "Todos");
+        } else {
+            companyNames.add(0, "");
+        }
+
+        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(companyNames.toArray(new String[0]));
+
+        return comboBoxModel;
+    }
+
+
 }

@@ -1,8 +1,6 @@
 package org.example.View;
 
-import org.example.entity.CompanyEntity;
 import org.example.entity.PersonEntity;
-import org.example.repository.CompanyRepository;
 import org.example.service.PersonService;
 
 import javax.swing.*;
@@ -10,12 +8,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.List;
+
+import static org.example.View.CompanyManagerWindow.formatation;
 
 public class PersonManagerWindow extends JFrame {
 
@@ -50,22 +51,21 @@ public class PersonManagerWindow extends JFrame {
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(0, 128, 255));
 
-        JComboBox comboBoxSearchByCompany = new JComboBox();
+        JComboBox comboBoxSearchByCompany = new JComboBox(PersonService.getAllCompanyNames(true));
         comboBoxSearchByCompany.setToolTipText("Empresa...");
 
         txtSearch = new JTextField();
         txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 15));
         txtSearch.setHorizontalAlignment(SwingConstants.CENTER);
-        txtSearch.setForeground(Color.GRAY); // Define a cor cinza para o texto inicial
+        txtSearch.setForeground(Color.GRAY);
         txtSearch.setText("Pesquisar...");
         txtSearch.setColumns(10);
-        // Adiciona um FocusListener para tratar o comportamento do texto
         txtSearch.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 if (txtSearch.getText().equals("Pesquisar...")) {
                     txtSearch.setText("");
-                    txtSearch.setForeground(Color.BLACK); // Muda a cor para preto quando o campo está em foco
+                    txtSearch.setForeground(Color.BLACK);
                 }
             }
 
@@ -154,7 +154,8 @@ public class PersonManagerWindow extends JFrame {
 
         List<PersonEntity> people = PersonService.getAll();
         DefaultTableModel model = PersonService.createPeopleTable(people);
-
+        MaskFormatter phoneNumberFormatter = formatation("+55 (##) ##### ####");
+        MaskFormatter cpfFormatter = formatation("###.###.###-##");
 
         table.setModel(model);
 
@@ -165,9 +166,11 @@ public class PersonManagerWindow extends JFrame {
         table.getColumnModel().getColumn(1).setPreferredWidth(230); // Nome
         table.getColumnModel().getColumn(2).setPreferredWidth(390); // Sobrenome
         table.getColumnModel().getColumn(3).setPreferredWidth(230); // Telefone
+        table.getColumnModel().getColumn(3).setCellRenderer(new CellRenderer(phoneNumberFormatter));
         table.getColumnModel().getColumn(4).setPreferredWidth(130); // Quarto
         table.getColumnModel().getColumn(5).setPreferredWidth(298); // Empresa
         table.getColumnModel().getColumn(6).setPreferredWidth(170); // Cpf
+        table.getColumnModel().getColumn(6).setCellRenderer(new CellRenderer(cpfFormatter)); // Cpf
 
 
         GroupLayout gl_panel = new GroupLayout(panel);

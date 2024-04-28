@@ -170,8 +170,8 @@ public class CompanyManagerWindow extends JFrame {
         table.getColumnModel().getColumn(4).setPreferredWidth(160); // Cnpj
         table.getColumnModel().getColumn(5).setPreferredWidth(130); // I.E
         table.getColumnModel().getColumn(6).setPreferredWidth(430); // Email
-        table.getColumnModel().getColumn(3).setCellRenderer(new CNPJCellRenderer(phoneNumberFormatter));
-        table.getColumnModel().getColumn(4).setCellRenderer(new CNPJCellRenderer(cnpjFormatter));
+        table.getColumnModel().getColumn(3).setCellRenderer(new CellRenderer(phoneNumberFormatter));
+        table.getColumnModel().getColumn(4).setCellRenderer(new CellRenderer(cnpjFormatter));
 
         GroupLayout gl_panel = new GroupLayout(panel);
         gl_panel.setHorizontalGroup(
@@ -301,7 +301,7 @@ public class CompanyManagerWindow extends JFrame {
             }
         });
     }
-    private static MaskFormatter formatation(String format){
+    static MaskFormatter formatation(String format){
         MaskFormatter shape = null;
         try{
             shape = new MaskFormatter(format);
@@ -312,10 +312,10 @@ public class CompanyManagerWindow extends JFrame {
         return shape;
     }
 }
-class CNPJCellRenderer extends JLabel implements TableCellRenderer {
+class CellRenderer extends JLabel implements TableCellRenderer {
     private final MaskFormatter formatter;
 
-    public CNPJCellRenderer(MaskFormatter formatter) {
+    public CellRenderer(MaskFormatter formatter) {
         this.formatter = formatter;
         setOpaque(true);
     }

@@ -87,7 +87,7 @@ public class NewPersonWindow extends JFrame {
         JLabel lblComany = new JLabel("Empresa");
         lblComany.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
 
-        JComboBox comboBoxCompanies = new JComboBox();
+        JComboBox comboBoxCompanies = new JComboBox(PersonService.getAllCompanyNames(false));
 
         JLabel lblName = new JLabel("Nome");
         lblName.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 20));
@@ -245,7 +245,7 @@ public class NewPersonWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(personEntity.getId() == null){
-                    boolean ok = PersonService.persistPerson(textFieldName, textFieldSurname, textFieldCpf, textFieldTel);
+                    boolean ok = PersonService.persistPerson(textFieldName, textFieldSurname, textFieldCpf, textFieldTel, comboBoxCompanies);
 
                     if(ok){
                         atualizate.doClick();
@@ -254,7 +254,7 @@ public class NewPersonWindow extends JFrame {
                         System.out.println("Campos invalidos");
                     }
                 }else{
-                    boolean ok = PersonService.updatePerson(personEntity, textFieldName, textFieldSurname, textFieldCpf, textFieldTel);
+                    boolean ok = PersonService.updatePerson(personEntity, textFieldName, textFieldSurname, textFieldCpf, textFieldTel, comboBoxCompanies);
                     if(ok){
                         atualizate.doClick(); dispose();
                     }else{

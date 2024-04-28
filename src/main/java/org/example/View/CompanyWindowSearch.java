@@ -9,7 +9,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -170,8 +169,8 @@ public class CompanyWindowSearch extends JFrame {
         table.getColumnModel().getColumn(4).setPreferredWidth(160); // Cnpj
         table.getColumnModel().getColumn(5).setPreferredWidth(130); // I.E
         table.getColumnModel().getColumn(6).setPreferredWidth(430); // Email
-        table.getColumnModel().getColumn(3).setCellRenderer(new CNPJCellRenderer(phoneNumberFormatter));
-        table.getColumnModel().getColumn(4).setCellRenderer(new CNPJCellRenderer(cnpjFormatter));
+        table.getColumnModel().getColumn(3).setCellRenderer(new CellRenderer(phoneNumberFormatter));
+        table.getColumnModel().getColumn(4).setCellRenderer(new CellRenderer(cnpjFormatter));
 
         GroupLayout gl_panel = new GroupLayout(panel);
         gl_panel.setHorizontalGroup(
