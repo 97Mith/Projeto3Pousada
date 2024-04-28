@@ -269,6 +269,16 @@ public class PersonManagerWindow extends JFrame {
                 });
             }
         });
+
+        btnDelete.addActionListener(e -> {
+            final int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                PersonService.delete((int) model.getValueAt(selectedRow, 0));
+                btnAtualizate.doClick();
+            } else {
+                JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
+            }
+        });
     }
 }
 

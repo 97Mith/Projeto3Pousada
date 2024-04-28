@@ -217,10 +217,30 @@ public class PersonService {
 
         for (PersonEntity person : personList) {
             if (person.getCpf().equals(text)) {
+                JOptionPane.showMessageDialog(
+                        null, "Esse número de CPF já foi cadastrado.",
+                        "Aviso", JOptionPane.WARNING_MESSAGE
+                );
                 return false;
             }
         }
 
         return true;
+    }
+    public static boolean delete(Integer id){
+        try{
+            PersonRepository.deletePerson(id);
+            JOptionPane.showMessageDialog(
+                    null, "Pessoa deletada com sucesso.",
+                    "Aviso", JOptionPane.INFORMATION_MESSAGE
+            );
+            return true;
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(
+                    null, "Erro ao deletar pessoa.",
+                    "Aviso", JOptionPane.WARNING_MESSAGE
+            );
+            return false;
+        }
     }
 }
