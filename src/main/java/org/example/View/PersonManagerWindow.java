@@ -150,6 +150,7 @@ public class PersonManagerWindow extends JFrame {
         );
 
         table = new JTable();
+        table.setFont(new Font("Arial", Font.BOLD, 12));
         JScrollPane scrollPane = new JScrollPane(table);
 
         List<PersonEntity> people = PersonService.getAll();
