@@ -38,7 +38,7 @@ public class PersonManagerSearch extends JFrame {
         });
     }*/
 
-    public PersonManagerSearch(String name, String type) {
+    public PersonManagerSearch(String name, String type, Integer bedroomNumber) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBounds(100, 100, 450, 300);
@@ -269,7 +269,7 @@ public class PersonManagerSearch extends JFrame {
                 dispose();
 
                 SwingUtilities.invokeLater(() -> {
-                    new PersonManagerWindow().setVisible(true);
+                    new PersonManagerWindow(bedroomNumber).setVisible(true);
                 });
             }
         });
@@ -290,11 +290,11 @@ public class PersonManagerSearch extends JFrame {
                 String selectedCompanyName = (String) comboBoxSearchByCompany.getSelectedItem();
 
                 if (selectedCompanyName != null && selectedCompanyName.trim().equals("-- todos --")) {
-                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText(), "name");
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText(), "name", bedroomNumber);
                     personManagerSearch.setVisible(true);
                     dispose();
                 }else{
-                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(selectedCompanyName, "companyName");
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(selectedCompanyName, "companyName", bedroomNumber);
                     personManagerSearch.setVisible(true);
                     dispose();
                 }

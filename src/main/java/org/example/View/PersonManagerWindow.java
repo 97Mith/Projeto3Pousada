@@ -29,7 +29,7 @@ public class PersonManagerWindow extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    PersonManagerWindow frame = new PersonManagerWindow();
+                    PersonManagerWindow frame = new PersonManagerWindow(1);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -38,7 +38,7 @@ public class PersonManagerWindow extends JFrame {
         });
     }
 
-    public PersonManagerWindow() {
+    public PersonManagerWindow(Integer bedroomNumber) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBounds(100, 100, 450, 300);
@@ -269,7 +269,7 @@ public class PersonManagerWindow extends JFrame {
                 dispose();
 
                 SwingUtilities.invokeLater(() -> {
-                    new PersonManagerWindow().setVisible(true);
+                    new PersonManagerWindow(bedroomNumber).setVisible(true);
                 });
             }
         });
@@ -290,11 +290,11 @@ public class PersonManagerWindow extends JFrame {
                 String selectedCompanyName = (String) comboBoxSearchByCompany.getSelectedItem();
 
                 if (selectedCompanyName != null && selectedCompanyName.trim().equals("-- todos --")) {
-                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText(), "name");
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(txtSearch.getText(), "name", bedroomNumber);
                     personManagerSearch.setVisible(true);
                     dispose();
                 }else{
-                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(selectedCompanyName, "companyName");
+                    PersonManagerSearch personManagerSearch = new PersonManagerSearch(selectedCompanyName, "companyName", bedroomNumber);
                     personManagerSearch.setVisible(true);
                     dispose();
                 }
