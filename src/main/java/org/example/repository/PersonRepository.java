@@ -67,6 +67,13 @@ public class PersonRepository {
     public static void deleteById(List<PersonEntity> people, Integer id) {
         people.removeIf(company -> company.getId().equals(id));
     }
+
+    public static void insertOrRemoveBedroom(Integer personId, Integer bedroomNumber){
+        PersonEntity person = findById(personId);
+        person.setBedroomNumber(bedroomNumber);
+
+        saveGuestInDB(person);
+    }
 }
 
 

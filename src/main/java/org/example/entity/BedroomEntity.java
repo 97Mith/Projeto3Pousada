@@ -3,7 +3,7 @@ package org.example.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bedrooms")
+@Table(name = "bedrooms_info")
 public class BedroomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,14 @@ public class BedroomEntity {
         this.hasBathroom = hasBathroom;
         this.status = status;
         this.value = value;
+    }
+
+    public Integer getBedroomNumber() {
+        return bedroomNumber;
+    }
+
+    public void setBedroomNumber(Integer bedroomNumber) {
+        this.bedroomNumber = bedroomNumber;
     }
 
     public Integer getCapacity() {

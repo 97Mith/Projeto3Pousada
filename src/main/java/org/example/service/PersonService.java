@@ -279,4 +279,27 @@ public class PersonService {
         }
         return peopleSearched;
     }
+    public static boolean updateBedroom(Integer personId, Integer bedroomNumber){
+        try{
+            PersonRepository.insertOrRemoveBedroom(personId, bedroomNumber);
+            if(bedroomNumber == 0){
+                JOptionPane.showMessageDialog(null,
+                        "Removido do quarto com sucesso",
+                        "Aviso",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(null,
+                        "Movido para o quarto "+ bedroomNumber,
+                        "Aviso",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+            return true;
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao tentar remover pessoa!",
+                    "Aviso",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
 }
