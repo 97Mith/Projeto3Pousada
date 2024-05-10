@@ -2,25 +2,21 @@ package org.example.View;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
+import org.example.service.PersonService;
 
-import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
-import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JTable;
 
 public class BedroomWindow extends JFrame {
 
@@ -323,9 +319,9 @@ public class BedroomWindow extends JFrame {
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setBackground(new Color(0, 128, 192));
 
-        JButton btnRemoveProduct_1 = new JButton("-  Remover");
-        btnRemoveProduct_1.setForeground(Color.WHITE);
-        btnRemoveProduct_1.setBackground(new Color(128, 0, 0));
+        JButton btnRemoveGuest = new JButton("-  Remover");
+        btnRemoveGuest.setForeground(Color.WHITE);
+        btnRemoveGuest.setBackground(new Color(128, 0, 0));
         GroupLayout gl_panel_1 = new GroupLayout(panel_1);
         gl_panel_1.setHorizontalGroup(
                 gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -361,7 +357,7 @@ public class BedroomWindow extends JFrame {
                                 .addContainerGap()
                                 .addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(btnRemoveProduct_1, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                                .addComponent(btnRemoveGuest, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         gl_panel_1.setVerticalGroup(
@@ -374,7 +370,7 @@ public class BedroomWindow extends JFrame {
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(btnAdd)
-                                        .addComponent(btnRemoveProduct_1))
+                                        .addComponent(btnRemoveGuest))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(lblCheckIn)
@@ -432,6 +428,26 @@ public class BedroomWindow extends JFrame {
         );
         panel.setLayout(gl_panel);
         contentPane.setLayout(gl_contentPane);
+
+        btnAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PersonManagerWindow(bedroomNumber).setVisible(true);
+            }
+        });
+
+        /*btnRemoveGuest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    PersonService.updateBedroom((int) model.getValueAt(selectedRow, 0),bedroomNumber);
+                    btnAtualizate.doClick();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
+                }
+            }
+        });*/
     }
     public void isChecked(JCheckBox checkBox, JLabel label) {
         checkBox.addItemListener(new ItemListener() {

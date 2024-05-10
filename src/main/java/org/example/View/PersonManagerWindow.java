@@ -300,6 +300,19 @@ public class PersonManagerWindow extends JFrame {
                 }
             }
         });
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    PersonService.updateBedroom((int) model.getValueAt(selectedRow, 0),bedroomNumber);
+                    btnAtualizate.doClick();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
+                }
+            }
+        });
+
     }
 }
 

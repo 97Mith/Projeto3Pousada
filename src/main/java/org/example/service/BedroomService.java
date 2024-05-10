@@ -6,7 +6,7 @@ import org.example.repository.BedroomRepository;
 import javax.swing.*;
 
 public class BedroomService {
-    public static  boolean newBedroom(BedroomEntity bedroom){
+    private static  boolean newBedroom(BedroomEntity bedroom){
         try{
             BedroomRepository.createBedroom(bedroom);
             JOptionPane.showMessageDialog(null,
