@@ -305,9 +305,16 @@ public class PersonManagerSearch extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 final int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
-                    PersonService.updateBedroom((int) model.getValueAt(selectedRow, 0),bedroomNumber);
-                    btnUpdate.doClick();
-                    dispose();
+                    Integer verificator = PersonService.getById((int) model.getValueAt(selectedRow, 0)).getBedroomNumber();
+
+                    if(verificator == bedroomNumber){
+                        JOptionPane.showMessageDialog(null, "Pessoa já está no quarto.");
+                    }else{
+                        PersonService.updateBedroom((int) model.getValueAt(selectedRow, 0),bedroomNumber);
+                        btnUpdate.doClick();
+                        dispose();
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
                 }
