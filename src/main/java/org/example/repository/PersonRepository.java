@@ -26,13 +26,21 @@ public class PersonRepository {
 
         return em.createQuery("SELECT c FROM PersonEntity c" , PersonEntity.class).getResultList();
     }
+    public static List<PersonEntity> findAllByBedroomNumber(Integer num) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
+        EntityManager em = emf.createEntityManager();
+
+        return em.createQuery("SELECT p FROM PersonEntity p WHERE p.bedroomNumber = :num", PersonEntity.class)
+                .setParameter("num", num)
+                .getResultList();
+    }
     public static PersonEntity findById(Integer id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
         EntityManager em = emf.createEntityManager();
 
         return em.find(PersonEntity.class, id);
     }
-    public static List<PersonEntity> findByNameOrCompanyName(String name, String type) {
+    public static List<PersonEntity> findByAttribute(String name, String type) {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
             EntityManager em = emf.createEntityManager();

@@ -268,7 +268,7 @@ public class PersonService {
     }
 
     public static List<PersonEntity> getPeopleByNameOrCompanyName(String name, String type){
-        List<PersonEntity> peopleSearched = PersonRepository.findByNameOrCompanyName(name, type);
+        List<PersonEntity> peopleSearched = PersonRepository.findByAttribute(name, type);
         assert peopleSearched != null;
         if(peopleSearched.isEmpty()){
             JOptionPane.showMessageDialog(null,

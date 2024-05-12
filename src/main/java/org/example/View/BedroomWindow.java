@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
+import org.example.entity.PersonEntity;
+import org.example.service.BedroomService;
 import org.example.service.PersonService;
 
 import javax.swing.GroupLayout.Alignment;
@@ -15,8 +17,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableModel;
 
 public class BedroomWindow extends JFrame {
 
@@ -387,10 +391,13 @@ public class BedroomWindow extends JFrame {
                                 .addComponent(btnDoneStay)
                                 .addContainerGap())
         );
-
+        List<PersonEntity> guests = BedroomService.loadAllInBedroom(bedroomNumber);
+        DefaultTableModel modelGuests = PersonService.createPeopleTable(guests);
         tableGuests = new JTable();
         scrollPane_1_1.setViewportView(tableGuests);
         panel_1.setLayout(gl_panel_1);
+        tableGuests.setModel(modelGuests);
+        formatTableStandard(tableGuests);
 
         JLabel lbl = new JLabel("Quarto");
         lbl.setForeground(new Color(255, 255, 255));
@@ -457,5 +464,16 @@ public class BedroomWindow extends JFrame {
                 }
             }
         });
+    }
+    public static void formatTableStandard(JTable table){
+        table.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
+        table.getColumnModel().getColumn(1).setPreferredWidth(230); // Nome
+        table.getColumnModel().getColumn(2).setPreferredWidth(390); // Sobrenome
+        table.getColumnModel().getColumn(3).setPreferredWidth(230); // Telefone
+        //table.getColumnModel().getColumn(3).setCellRenderer(new CellRenderer(phoneNumberFormatter));
+        table.getColumnModel().getColumn(4).setPreferredWidth(0); // Quarto
+        table.getColumnModel().getColumn(5).setPreferredWidth(298); // Empresa
+        table.getColumnModel().getColumn(6).setPreferredWidth(170); // Cpf
+        //table.getColumnModel().getColumn(6).setCellRenderer(new CellRenderer(cpfFormatter)); // Cpf
     }
 }
