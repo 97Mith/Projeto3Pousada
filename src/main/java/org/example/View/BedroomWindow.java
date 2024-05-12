@@ -319,6 +319,8 @@ public class BedroomWindow extends JFrame {
 
         panel_2_1.setLayout(gl_panel_2_1);
 
+        JButton btnUpdate = new JButton();
+
         JButton btnAdd = new JButton("+  Adicionar");
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setBackground(new Color(0, 128, 192));
@@ -436,25 +438,45 @@ public class BedroomWindow extends JFrame {
         panel.setLayout(gl_panel);
         contentPane.setLayout(gl_contentPane);
 
-        btnAdd.addActionListener(new ActionListener() {
+        btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PersonManagerWindow(bedroomNumber).setVisible(true);
+                dispose();
+
+                SwingUtilities.invokeLater(() -> {
+                    new BedroomWindow(bedroomNumber).setVisible(true);
+                });
             }
         });
 
-        /*btnRemoveGuest.addActionListener(new ActionListener() {
+        btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final int selectedRow = table.getSelectedRow();
+                //TODO fazer ele ler o atributo capacity
+                if(guests.size() > 3 ){
+                    JOptionPane.showMessageDialog(
+                            null, "O quarto está lotado.",
+                            "Aviso", JOptionPane.INFORMATION_MESSAGE
+                    );
+                }else{
+                    new PersonManagerWindow(bedroomNumber, btnUpdate).setVisible(true);
+                }
+
+            }
+        });
+
+        btnRemoveGuest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int selectedRow = tableGuests.getSelectedRow();
                 if (selectedRow != -1) {
-                    PersonService.updateBedroom((int) model.getValueAt(selectedRow, 0),bedroomNumber);
-                    btnAtualizate.doClick();
+                    PersonService.updateBedroom((int) modelGuests.getValueAt(selectedRow, 0),0);
+                    btnUpdate.doClick();
                 } else {
                     JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
                 }
             }
-        });*/
+        });
     }
     public void isChecked(JCheckBox checkBox, JLabel label) {
         checkBox.addItemListener(new ItemListener() {
@@ -468,7 +490,7 @@ public class BedroomWindow extends JFrame {
     public static void formatTableStandard(JTable table){
         table.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
         table.getColumnModel().getColumn(1).setPreferredWidth(230); // Nome
-        table.getColumnModel().getColumn(2).setPreferredWidth(390); // Sobrenome
+        table.getColumnModel().getColumn(2).setPreferredWidth(230); // Sobrenome
         table.getColumnModel().getColumn(3).setPreferredWidth(230); // Telefone
         //table.getColumnModel().getColumn(3).setCellRenderer(new CellRenderer(phoneNumberFormatter));
         table.getColumnModel().getColumn(4).setPreferredWidth(0); // Quarto
