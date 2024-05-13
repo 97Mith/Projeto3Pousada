@@ -36,14 +36,14 @@ public class MainWindow extends JFrame {
 
 
         lateralPanel = new JPanel();
-        lateralPanel.setBackground(new Color(50, 50, 160));
+        lateralPanel.setBackground(new Color(0, 128, 192));
         lateralPanel.setPreferredSize(new Dimension(SIDE_PANEL_WIDTH, getHeight()));
 
 
         JButton btnManageGuests = new JButton("Consultar hospede");
         btnManageGuests.setFont(new Font("Tahoma", Font.PLAIN, 20));
         btnManageGuests.setForeground(new Color(255, 255, 255));
-        btnManageGuests.setBackground(new Color(50, 50, 160));
+        btnManageGuests.setBackground(new Color(0, 128, 192));
         btnManageGuests.setMargin(new Insets(0, 20, 0, 150));
 
 
@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
 
         JPanel panel_1 = new JPanel();
         panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-        panel_1.setBackground(new Color(0, 0, 160));
+        panel_1.setBackground(new Color(0, 128, 192));
 
         JLabel lblNewLabel = new JLabel("MENU PRINCIPAL");
         lblNewLabel.setForeground(new Color(255, 255, 255));
@@ -65,19 +65,19 @@ public class MainWindow extends JFrame {
         btnManageCompany.setMargin(new Insets(0, 20, 0, 150));
         btnManageCompany.setForeground(Color.WHITE);
         btnManageCompany.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        btnManageCompany.setBackground(new Color(50, 50, 160));
+        btnManageCompany.setBackground(new Color(0, 128, 192));
 
         JButton btnManageBedroons = new JButton("Gerenciar quartos");
         btnManageBedroons.setMargin(new Insets(0, 20, 0, 150));
         btnManageBedroons.setForeground(Color.WHITE);
         btnManageBedroons.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        btnManageBedroons.setBackground(new Color(50, 50, 160));
+        btnManageBedroons.setBackground(new Color(0, 128, 192));
 
         JButton btnManageFinances = new JButton("Gerenciar finanças");
         btnManageFinances.setMargin(new Insets(0, 20, 0, 150));
         btnManageFinances.setForeground(Color.WHITE);
         btnManageFinances.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        btnManageFinances.setBackground(new Color(50, 50, 160));
+        btnManageFinances.setBackground(new Color(0, 128, 192));
 
         JPanel panel_1_1 = new JPanel();
         panel_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -260,7 +260,7 @@ public class MainWindow extends JFrame {
 
         Color backgroundColor;
         if (!hasGuests) {
-            backgroundColor = Color.WHITE;
+            backgroundColor = new Color(170,245,170);
         } else {
             backgroundColor = new Color(245, 245, 200);
         }
