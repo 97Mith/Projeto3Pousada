@@ -1,11 +1,16 @@
 package org.example.View;
 
+import org.example.entity.PersonEntity;
+import org.example.service.BedroomService;
+import org.example.service.MainService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EtchedBorder;
@@ -173,8 +178,8 @@ public class MainWindow extends JFrame {
             addBedroom();
         }
 
-        JButton btnAddBedroom = new JButton("+");
-        btnAddBedroom.setBackground(Color.WHITE);
+        JButton btnUpdate = new JButton("Atualizar");
+        btnUpdate.setBackground(Color.WHITE);
 
 
         JButton btnOption = new JButton("opção");
@@ -185,7 +190,7 @@ public class MainWindow extends JFrame {
                         .addGroup(gl_panel.createSequentialGroup()
                                 .addComponent(btnShowLateralPane, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(btnAddBedroom, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED, 306, Short.MAX_VALUE)
                                 .addComponent(btnOption, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
                                 .addGap(24))
@@ -194,17 +199,18 @@ public class MainWindow extends JFrame {
                 gl_panel.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
                                 .addComponent(btnShowLateralPane, GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
-                                .addComponent(btnAddBedroom, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(btnOption, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
         );
         panel.setLayout(gl_panel);
         content.setLayout(gl_conteudo);
 
+
         //TODO botões do painel lateral
         btnManageGuests.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               new PersonManagerWindow(0, new JButton());
+               new PersonManagerWindow(0, btnManageGuests).setVisible(true);
             }
         });
 
@@ -213,6 +219,16 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 CompanyManagerWindow newCompanyWindow = new CompanyManagerWindow();
                 newCompanyWindow.setVisible(true);
+            }
+        });
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+
+                SwingUtilities.invokeLater(() -> {
+                    new MainWindow().setVisible(true);
+                });
             }
         });
     }
@@ -233,15 +249,11 @@ public class MainWindow extends JFrame {
         int panelWidth = bedroomPane.getWidth() / 3;
         int panelHeight = bedroomPane.getHeight() / 3;
 
+        Integer num = bedroomCount + 1;
+
         bedroomLabel.setPreferredSize(new Dimension(panelWidth, panelHeight));
 
-        String[] columns = {"Hóspedes", "Telefone"};
-        String[][] data = {
-                {"Douglas", "+55 (47) 99908 0909"},
-                {"Pixinguinha", "+55 (47) 99918 1102"},
-                {"Luan", ""},
-                {"", ""}
-        }; // Exemplo de dados
+        List<PersonEntity> data = BedroomService.loadAllInBedroom(num);
 
         // Verificar se há dados de hóspedes e telefone na tabela
         boolean hasGuests = isSomebodyinBedroom(data);
@@ -256,7 +268,7 @@ public class MainWindow extends JFrame {
         // Criação do painel para a tabela e a label de checkout
         JPanel tablePanel = new JPanel(new BorderLayout());
 
-        DefaultTableModel model = new DefaultTableModel(data, columns);
+        DefaultTableModel model = MainService.createMainTable(data);
         JTable table = new JTable(model);
         table.setFont(table.getFont().deriveFont(table.getFont().getSize()));
         table.setRowHeight(table.getRowHeight() * 2);
@@ -266,7 +278,7 @@ public class MainWindow extends JFrame {
         tablePanel.add(tableScrollPane, BorderLayout.CENTER);
 
         // Atribuindo a data de checkout à variável
-        LocalDateTime checkoutDateTime = LocalDateTime.of(2024, 3, 29, 12, 0); // Exemplo: 31 de março de 2024, 12:00
+        LocalDateTime checkoutDateTime = LocalDateTime.of(2024, 6, 29, 12, 0); // Exemplo: 31 de março de 2024, 12:00
 
         // Formatação da data para exibição
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -282,15 +294,12 @@ public class MainWindow extends JFrame {
 
         //TODO substituir o texto nome da empresa, check in e check out pelas variáveis respectivamente
 
-        JLabel roomLabel = new JLabel("Quarto " + (bedroomCount + 1) + "  " +"Andaime");
+        JLabel roomLabel = new JLabel("Quarto " + (num) + "  " +"Nome da empresa");
         roomLabel.setHorizontalAlignment(SwingConstants.CENTER);
         bedroomLabel.add(roomLabel, BorderLayout.NORTH);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(0, 1, 0, 20));
-
-
-        Integer num = bedroomCount + 1;
 
         JButton editButton = new JButton("Ver detalhes");
         editButton.setBackground(backgroundColor);
@@ -338,14 +347,12 @@ public class MainWindow extends JFrame {
         return checkoutDateTime;
     }
 
-    public boolean isSomebodyinBedroom(String[][] data){
+    public boolean isSomebodyinBedroom(List<PersonEntity> data){
         boolean hasGuests = false;
-        for (String[] row : data) {
-            if (!row[0].isEmpty() || !row[1].isEmpty()) {
-                hasGuests = true;
-                break;
-            }
+        if(!data.isEmpty()){
+            hasGuests = true;
         }
+
         return hasGuests;
     }
     public static void main(String[] args) {

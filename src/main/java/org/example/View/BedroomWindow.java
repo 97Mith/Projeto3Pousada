@@ -405,7 +405,7 @@ public class BedroomWindow extends JFrame {
         lbl.setForeground(new Color(255, 255, 255));
         lbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
-        JLabel lbl_1 = new JLabel("1");
+        JLabel lbl_1 = new JLabel(String.valueOf(bedroomNumber));
         lbl_1.setForeground(Color.WHITE);
         lbl_1.setFont(new Font("Verdana", Font.PLAIN, 20));
 
