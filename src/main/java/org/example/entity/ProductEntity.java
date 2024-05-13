@@ -3,14 +3,16 @@ package org.example.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "product_registration")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer registerNum;
     public Integer qnt = 0;
     public String description = "Despesas";
-    @Column(nullable = false)
+    @Column(nullable = false, name = "unitary_value")
     public double unValue;
+    public Integer bedroomNumber;
     public Integer companyId;
     public Integer guestId;
     public String obs;
@@ -26,6 +28,14 @@ public class ProductEntity {
 
     public void setQnt(Integer qnt) {
         this.qnt = qnt;
+    }
+
+    public Integer getBedroomNumber() {
+        return bedroomNumber;
+    }
+
+    public void setBedroomNumber(Integer bedroomNumber) {
+        this.bedroomNumber = bedroomNumber;
     }
 
     public String getDescription() {
