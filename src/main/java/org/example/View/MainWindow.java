@@ -260,7 +260,7 @@ public class MainWindow extends JFrame {
 
         Color backgroundColor;
         if (!hasGuests) {
-            backgroundColor = new Color(170,245,170);
+            backgroundColor = new Color(170,245,245);
         } else {
             backgroundColor = new Color(245, 245, 200);
         }
@@ -301,7 +301,7 @@ public class MainWindow extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(0, 1, 0, 20));
 
-        JButton editButton = new JButton("Ver detalhes");
+        JButton editButton = new JButton("Gerenciar quarto");
         editButton.setBackground(backgroundColor);
         editButton.addActionListener(new ActionListener() {
             @Override
