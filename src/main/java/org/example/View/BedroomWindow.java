@@ -6,8 +6,12 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
+import org.example.entity.BedroomEntity;
+import org.example.entity.CompanyEntity;
 import org.example.entity.PersonEntity;
+import org.example.repository.CompanyRepository;
 import org.example.service.BedroomService;
+import org.example.service.CompanyService;
 import org.example.service.PersonService;
 
 import javax.swing.GroupLayout.Alignment;
@@ -57,6 +61,9 @@ public class BedroomWindow extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
+
+        BedroomEntity bedroomEntity = BedroomService.getById(bedroomNumber);
+        Integer capacity = bedroomEntity.getCapacity();
 
         JPanel panel = new JPanel();
         panel.setBackground(new Color(0, 128, 255));
@@ -409,7 +416,9 @@ public class BedroomWindow extends JFrame {
         lbl_1.setForeground(Color.WHITE);
         lbl_1.setFont(new Font("Verdana", Font.PLAIN, 20));
 
-        JLabel lblCompany = new JLabel("Empresa");
+        JLabel lblCompany = new JLabel("Sem empresa");
+        if(!guests.isEmpty()){String companyName = guests.get(0).getCompanyName(); lblCompany.setText(companyName);}
+
         lblCompany.setForeground(Color.WHITE);
         lblCompany.setFont(new Font("Tahoma", Font.PLAIN, 20));
         GroupLayout gl_panel = new GroupLayout(panel);
@@ -453,7 +462,7 @@ public class BedroomWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO fazer ele ler o atributo capacity
-                if(guests.size() > 3 ){
+                if(guests.size() > capacity - 1 ){
                     JOptionPane.showMessageDialog(
                             null, "O quarto está lotado.",
                             "Aviso", JOptionPane.INFORMATION_MESSAGE

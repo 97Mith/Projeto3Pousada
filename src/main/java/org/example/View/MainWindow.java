@@ -1,5 +1,6 @@
 package org.example.View;
 
+import org.example.entity.BedroomEntity;
 import org.example.entity.PersonEntity;
 import org.example.service.BedroomService;
 import org.example.service.MainService;
@@ -31,8 +32,6 @@ public class MainWindow extends JFrame {
         setTitle("Painel Lateral Retrátil");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //setResizable(false);
-        //setSize(996, 739);
 
 
         lateralPanel = new JPanel();
@@ -294,7 +293,14 @@ public class MainWindow extends JFrame {
 
         //TODO substituir o texto nome da empresa, check in e check out pelas variáveis respectivamente
 
-        JLabel roomLabel = new JLabel("Quarto " + (num) + "  " +"Nome da empresa");
+        BedroomEntity bedroomEntity = BedroomService.getById(num);
+        Integer vacancy = bedroomEntity.getCapacity() - data.size();
+
+        JLabel roomLabel = new JLabel("Quarto " + (num) + "                   " +"Vagas: " + vacancy);
+        if(!data.isEmpty()){
+            String companyName = data.get(0).getCompanyName();
+            roomLabel.setText("Quarto " + (num)  + "                     "+companyName+ "               "+ " " +"Vagas: " + vacancy);
+        }
         roomLabel.setHorizontalAlignment(SwingConstants.CENTER);
         bedroomLabel.add(roomLabel, BorderLayout.NORTH);
 

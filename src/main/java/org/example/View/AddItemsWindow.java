@@ -1,5 +1,7 @@
 package org.example.View;
 
+import org.example.View.NewCompanyWindow.NumberOnlyFilter;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,6 +16,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import javax.swing.text.PlainDocument;
 
 public class AddItemsWindow extends JFrame {
 
@@ -198,6 +201,13 @@ public class AddItemsWindow extends JFrame {
         );
         panel.setLayout(gl_panel);
         contentPane.setLayout(gl_contentPane);
+
+        //filtros
+        PlainDocument dosQuantiy = (PlainDocument) textFieldQuantity.getDocument();
+        dosQuantiy.setDocumentFilter(new NewCompanyWindow.NumberOnlyFilter());
+
+        PlainDocument dosValue = (PlainDocument) textFieldValue.getDocument();
+        dosValue.setDocumentFilter(new NewCompanyWindow.NumberOnlyFilter());
     }
 }
 

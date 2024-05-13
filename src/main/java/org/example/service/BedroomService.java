@@ -38,6 +38,18 @@ public class BedroomService {
             );
             return null;
         }
+    }
 
+    public static BedroomEntity getById(Integer id){
+        try{
+            return BedroomRepository.findById(id);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(
+                    null, "Erro ao carregar quartos.",
+                    "Aviso", JOptionPane.INFORMATION_MESSAGE
+            );
+            e.printStackTrace();
+            return null;
+        }
     }
 }

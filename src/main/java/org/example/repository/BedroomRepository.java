@@ -1,6 +1,7 @@
 package org.example.repository;
 
 import org.example.entity.BedroomEntity;
+import org.example.entity.CompanyEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,5 +20,10 @@ public class BedroomRepository {
         emf.close();
     }
 
+    public static BedroomEntity findById(Integer bedroomNumber){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
+        EntityManager em = emf.createEntityManager();
 
+        return em.find(BedroomEntity.class, bedroomNumber);
+    }
 }

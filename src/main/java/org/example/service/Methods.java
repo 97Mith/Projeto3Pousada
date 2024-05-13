@@ -6,7 +6,7 @@ public class Methods {
     public static boolean isNullOrEmpty(String value, String error){
         if(value == null || value.trim().isEmpty()){
                 JOptionPane.showMessageDialog(
-                        null, "O "+ error +" não pode ficar nulo",
+                        null, "O "+ error +" não pode ficar em branco",
                         "Aviso", JOptionPane.ERROR_MESSAGE
                 );
                 return false;

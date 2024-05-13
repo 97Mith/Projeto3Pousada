@@ -29,7 +29,7 @@ public class NewCompanyWindow extends JFrame {
     private List<CompanyEntity> companies = CompanyService.getAll();
 
     // Classe para filtrar entrada para aceitar apenas números
-    class NumberOnlyFilter extends DocumentFilter {
+    static class NumberOnlyFilter extends DocumentFilter {
         @Override
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
             if (string == null) return;
@@ -46,26 +46,6 @@ public class NewCompanyWindow extends JFrame {
             }
         }
     }
-
-    /**
-     * Launch the application.
-     */
-    /*public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    NewCompanyWindow frame = new NewCompanyWindow();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }*/
-
-    /**
-     * Create the frame.
-     */
     public NewCompanyWindow(JButton update, CompanyEntity company) {
         companyEntity = company;
 
