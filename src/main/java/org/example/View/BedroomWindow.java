@@ -11,6 +11,7 @@ import org.example.entity.CompanyEntity;
 import org.example.entity.PersonEntity;
 import org.example.entity.ProductEntity;
 import org.example.repository.CompanyRepository;
+import org.example.repository.PersonRepository;
 import org.example.service.BedroomService;
 import org.example.service.CompanyService;
 import org.example.service.PersonService;
@@ -253,9 +254,10 @@ public class BedroomWindow extends JFrame {
         DefaultTableModel modelProducts = ProductService.createProductTable(products);
         tableProducts = new JTable(modelProducts);
         scrollPane_1_1_1.setViewportView(tableProducts);
-        tableProducts.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tableProducts.getColumnModel().getColumn(1).setPreferredWidth(350);
+        tableProducts.getColumnModel().getColumn(0).setPreferredWidth(1);
+        tableProducts.getColumnModel().getColumn(1).setPreferredWidth(50);
         tableProducts.getColumnModel().getColumn(2).setPreferredWidth(350);
+        tableProducts.getColumnModel().getColumn(3).setPreferredWidth(350);
 
         JLabel lblNewLabel_1 = new JLabel("Total:  R$");
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
@@ -490,6 +492,20 @@ public class BedroomWindow extends JFrame {
                 final int selectedRow = tableGuests.getSelectedRow();
                 if (selectedRow != -1) {
                     PersonService.updateBedroom((int) modelGuests.getValueAt(selectedRow, 0),0);
+                    btnUpdate.doClick();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
+                }
+            }
+        });
+
+        btnRemoveProduct.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int selectedRow = tableProducts.getSelectedRow();
+                if (selectedRow != -1) {
+                    ProductEntity p = ProductService.getByRegister((int) modelProducts.getValueAt(selectedRow, 0));
+                    ProductService.delete(p);
                     btnUpdate.doClick();
                 } else {
                     JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");

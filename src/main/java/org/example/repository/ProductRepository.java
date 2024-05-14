@@ -16,6 +16,13 @@ public class ProductRepository {
         em.merge(product);
         em.getTransaction().commit();
     }
+    public static void deleteProduct(ProductEntity product){
+        em.getTransaction().begin();
+        ProductEntity managedProduct = em.merge(product);
+        em.remove(managedProduct);
+        em.getTransaction().commit();
+    }
+
     public static List<ProductEntity> findAllProductsWithFilter(Integer num, boolean isLaundry) {
         return em.createQuery(
                         "SELECT p FROM ProductEntity p WHERE p.bedroomNumber = :num AND p.isLaundry = :isLaundry",
@@ -24,4 +31,12 @@ public class ProductRepository {
                 .setParameter("isLaundry", isLaundry)
                 .getResultList();
     }
+
+    public static ProductEntity findById(Integer id) {
+        em.getTransaction().begin();
+        ProductEntity product = em.find(ProductEntity.class, id);
+        em.getTransaction().commit();
+        return product;
+    }
+
 }

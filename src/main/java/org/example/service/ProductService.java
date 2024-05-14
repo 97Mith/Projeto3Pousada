@@ -32,6 +32,7 @@ public class ProductService {
     }
     public static DefaultTableModel createProductTable(List<ProductEntity> product) {
         String[] columnNames = {
+                "NR",
                 "Qnt",
                 "Descrição",
                 "Observações",
@@ -44,6 +45,7 @@ public class ProductService {
 
         for (ProductEntity productTable : product) {
             Object[] rowData = {
+                    productTable.getRegisterNum(),
                     productTable.getQnt(),
                     productTable.getDescription(),
                     productTable.getObs(),
@@ -55,5 +57,30 @@ public class ProductService {
             tableModel.addRow(rowData);
         }
         return tableModel;
+    }
+
+    public static ProductEntity getByRegister(Integer register){
+        try{
+            return ProductRepository.findById(register);
+        }catch (Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    null, "Erro ao buscar ítem.",
+                    "Aviso", JOptionPane.ERROR_MESSAGE
+            );
+            return null;
+        }
+    }
+
+    public static void delete(ProductEntity product){
+        try{
+            ProductRepository.deleteProduct(product);
+        }catch (Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    null, "Erro ao excluir ítem.",
+                    "Aviso", JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 }

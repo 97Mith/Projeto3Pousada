@@ -229,4 +229,5 @@ public class CompanyService {
         }
         return companiesSearched;
     }
+    //TODO criar metodo getById para resolver bug
 }
