@@ -10,6 +10,7 @@ public class PersonEntity {
     public String name;
     public String surName;
     public Integer bedroomNumber;
+    public Integer companyId;
     public String companyName;
     public String phoneNumber;
     public String cpf;

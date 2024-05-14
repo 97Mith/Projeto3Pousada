@@ -3,20 +3,25 @@ package org.example.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product_registration")
+@Table(name = "products_registration")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer registerNum;
-    public Integer qnt = 0;
-    public String description = "Despesas";
-    @Column(nullable = false, name = "unitary_value")
-    public double unValue;
-    public Integer bedroomNumber;
-    public Integer companyId;
-    public Integer guestId;
-    public String obs;
-    public boolean isLaundry = false;
+    private Integer qnt = 0;
+    private String description = "Despesas";
+    private double unValue;
+    private double subTotal;
+    private Integer bedroomNumber;
+    private Integer companyId;
+    private Integer guestId;
+    private String obs;
+    private boolean isLaundry = false;
+
+    // Método para calcular o subTotal
+    private void calculateSubTotal() {
+        this.subTotal = this.qnt * this.unValue;
+    }
 
     public Integer getRegisterNum() {
         return registerNum;
@@ -28,14 +33,7 @@ public class ProductEntity {
 
     public void setQnt(Integer qnt) {
         this.qnt = qnt;
-    }
-
-    public Integer getBedroomNumber() {
-        return bedroomNumber;
-    }
-
-    public void setBedroomNumber(Integer bedroomNumber) {
-        this.bedroomNumber = bedroomNumber;
+        calculateSubTotal();
     }
 
     public String getDescription() {
@@ -52,6 +50,19 @@ public class ProductEntity {
 
     public void setUnValue(double unValue) {
         this.unValue = unValue;
+        calculateSubTotal();
+    }
+
+    public double getSubTotal() {
+        return subTotal;
+    }
+
+    public Integer getBedroomNumber() {
+        return bedroomNumber;
+    }
+
+    public void setBedroomNumber(Integer bedroomNumber) {
+        this.bedroomNumber = bedroomNumber;
     }
 
     public Integer getCompanyId() {

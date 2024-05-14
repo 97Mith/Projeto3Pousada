@@ -1,21 +1,27 @@
 package org.example.View;
 
 import org.example.View.NewCompanyWindow.NumberOnlyFilter;
+import org.example.entity.CompanyEntity;
+import org.example.entity.PersonEntity;
+import org.example.entity.ProductEntity;
+import org.example.repository.ProductRepository;
+import org.example.service.Methods;
+import org.example.service.PersonService;
+import org.example.service.ProductService;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.text.PlainDocument;
 
 public class AddItemsWindow extends JFrame {
@@ -30,7 +36,7 @@ public class AddItemsWindow extends JFrame {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -41,12 +47,12 @@ public class AddItemsWindow extends JFrame {
                 }
             }
         });
-    }
+    }*/
 
     /**
      * Create the frame.
      */
-    public AddItemsWindow() {
+    public AddItemsWindow(Integer companyId, List<PersonEntity> guests, boolean isLaundry, JButton btnAtualizate) {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 666, 309);
         contentPane = new JPanel();
@@ -134,10 +140,14 @@ public class AddItemsWindow extends JFrame {
 
         JLabel lblValorUni = new JLabel("Valor Un");
 
-        textFieldValue = new JTextField();
+        textFieldValue = new JFormattedTextField();
         textFieldValue.setColumns(10);
 
-        JComboBox comboBoxName = new JComboBox();
+        List<String> peopleNames = guests.stream()
+                .map(PersonEntity::getName)
+                .collect(Collectors.toList());
+        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(peopleNames.toArray(new String[0]));
+        JComboBox comboBoxName = new JComboBox(comboBoxModel);
 
         JLabel lblObs = new JLabel("Observação");
 
@@ -208,6 +218,50 @@ public class AddItemsWindow extends JFrame {
 
         PlainDocument dosValue = (PlainDocument) textFieldValue.getDocument();
         dosValue.setDocumentFilter(new NewCompanyWindow.NumberOnlyFilter());
+
+        // ações de botão
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean ok = true;
+                ok = Methods.isNullOrEmpty(textFieldQuantity.getText(), "campo 'Quantidade'");
+                ok = Methods.isNullOrEmpty(textFieldDescription.getText(), "campo 'Descrição'");
+                ok = Methods.isNullOrEmpty(textFieldValue.getText(), "valor unitário");
+
+                if(!ok){return;}
+
+                ok = Methods.maximumStringSize(2,textFieldQuantity.getText(),"campo 'Quantidade'");
+                ok = Methods.maximumStringSize(20,textFieldDescription.getText(), "campo 'Descrição'");
+                ok = Methods.minimumStringSize(3, textFieldDescription.getText(), "campo 'Descrição");
+                ok = Methods.maximumStringSize(6,textFieldValue.getText(), "campo 'Valor'");
+                ok = Methods.maximumStringSize(50,textFieldObservation.getText(), "campo 'Observação'");
+
+                if(!ok){return;}
+
+                ProductEntity productEntity = new ProductEntity();
+                productEntity.setQnt(Integer.parseInt(textFieldQuantity.getText()));
+                productEntity.setDescription(textFieldDescription.getText());
+                productEntity.setUnValue(Double.parseDouble(textFieldValue.getText()));
+                productEntity.setBedroomNumber(guests.get(0).getBedroomNumber());
+                productEntity.setCompanyId(companyId);
+                productEntity.setObs(textFieldObservation.getText());
+                productEntity.setLaundry(isLaundry);
+                String nameSelected = (String) comboBoxName.getSelectedItem();
+                List<PersonEntity> nameSelectedForId = PersonService.getPeopleByNameOrCompanyName(nameSelected, "name");
+                productEntity.setGuestId(nameSelectedForId.get(0).getId());
+
+
+                ProductService.insertProduct(productEntity, btnAtualizate);
+                dispose();
+            }
+        });
     }
 }
 

@@ -9,10 +9,12 @@ import com.toedter.calendar.JDateChooser;
 import org.example.entity.BedroomEntity;
 import org.example.entity.CompanyEntity;
 import org.example.entity.PersonEntity;
+import org.example.entity.ProductEntity;
 import org.example.repository.CompanyRepository;
 import org.example.service.BedroomService;
 import org.example.service.CompanyService;
 import org.example.service.PersonService;
+import org.example.service.ProductService;
 
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
@@ -21,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -246,8 +249,13 @@ public class BedroomWindow extends JFrame {
                                 .addGap(43))
         );
 
-        tableProducts = new JTable();
+        List<ProductEntity> products = ProductService.getProductsInRoom(bedroomNumber, false);
+        DefaultTableModel modelProducts = ProductService.createProductTable(products);
+        tableProducts = new JTable(modelProducts);
         scrollPane_1_1_1.setViewportView(tableProducts);
+        tableProducts.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tableProducts.getColumnModel().getColumn(1).setPreferredWidth(350);
+        tableProducts.getColumnModel().getColumn(2).setPreferredWidth(350);
 
         JLabel lblNewLabel_1 = new JLabel("Total:  R$");
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
@@ -447,6 +455,8 @@ public class BedroomWindow extends JFrame {
         panel.setLayout(gl_panel);
         contentPane.setLayout(gl_contentPane);
 
+        List<CompanyEntity> companies = CompanyService.getByName(lblCompany.getText());
+
         btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -484,6 +494,14 @@ public class BedroomWindow extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
                 }
+            }
+        });
+
+        btnAddProduct.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer companyId = companies.get(0).getId();
+                new AddItemsWindow(companyId, guests, false, btnUpdate).setVisible(true);
             }
         });
     }
