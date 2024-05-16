@@ -193,8 +193,14 @@ public class BedroomWindow extends JFrame {
                                 .addGap(44))
         );
 
-        tableLaundry = new JTable();
+        List<ProductEntity> laundry = ProductService.getProductsInRoom(bedroomNumber, true);
+        DefaultTableModel modelLaundry = ProductService.createProductTable(laundry);
+        tableLaundry = new JTable(modelLaundry);
         scrollPane_1_1_1_1.setViewportView(tableLaundry);
+        tableLaundry.getColumnModel().getColumn(0).setPreferredWidth(1);
+        tableLaundry.getColumnModel().getColumn(1).setPreferredWidth(50);
+        tableLaundry.getColumnModel().getColumn(2).setPreferredWidth(350);
+        tableLaundry.getColumnModel().getColumn(3).setPreferredWidth(350);
         panel_1_1_1.setLayout(gl_panel_1_1_1);
 
         JLabel lblConsumo = new JLabel("Consumo");
@@ -457,7 +463,7 @@ public class BedroomWindow extends JFrame {
         panel.setLayout(gl_panel);
         contentPane.setLayout(gl_contentPane);
 
-        List<CompanyEntity> companies = CompanyService.getByName(lblCompany.getText());
+        CompanyEntity company = CompanyRepository.findOneByName(lblCompany.getText());
 
         btnUpdate.addActionListener(new ActionListener() {
             @Override
@@ -516,11 +522,34 @@ public class BedroomWindow extends JFrame {
         btnAddProduct.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Integer companyId = companies.get(0).getId();
+                Integer companyId = company.getId();
                 new AddItemsWindow(companyId, guests, false, btnUpdate).setVisible(true);
             }
         });
+
+        btnAddCloath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer companyId = company.getId();
+                new AddItemsWindow(companyId, guests, true, btnUpdate).setVisible(true);
+            }
+        });
+
+        btnRemoveCloath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int selectedRow = tableLaundry.getSelectedRow();
+                if (selectedRow != -1) {
+                    ProductEntity p = ProductService.getByRegister((int) modelLaundry.getValueAt(selectedRow, 0));
+                    ProductService.delete(p);
+                    btnUpdate.doClick();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nenhum campo selecionado");
+                }
+            }
+        });
     }
+
     public void isChecked(JCheckBox checkBox, JLabel label) {
         checkBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {

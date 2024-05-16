@@ -1,6 +1,8 @@
 package org.example.View;
 
+import org.example.entity.BedroomEntity;
 import org.example.entity.PersonEntity;
+import org.example.service.BedroomService;
 import org.example.service.PersonService;
 
 import javax.swing.*;
@@ -310,9 +312,13 @@ public class PersonManagerSearch extends JFrame {
                     if(verificator == bedroomNumber){
                         JOptionPane.showMessageDialog(null, "Pessoa já está no quarto.");
                     }else{
+                        BedroomEntity bedroomCapacity = BedroomService.getById(bedroomNumber);
+
                         PersonService.updateBedroom((int) model.getValueAt(selectedRow, 0),bedroomNumber);
-                        btnUpdate.doClick();
-                        dispose();
+                        if(bedroomCapacity.getCapacity() == BedroomService.loadAllInBedroom(bedroomNumber).size()){
+                            btnUpdate.doClick();
+                            dispose();
+                        }
                     }
 
                 } else {

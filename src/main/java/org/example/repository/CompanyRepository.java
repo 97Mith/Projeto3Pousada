@@ -81,6 +81,17 @@ public class CompanyRepository {
             return null;
         }
     }
+    public static CompanyEntity findOneByName(String name) {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
+            EntityManager em = emf.createEntityManager();
+
+            return em.find(CompanyEntity.class, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static List<CompanyEntity> findByName(String name) {
         try {

@@ -209,7 +209,7 @@ public class MainWindow extends JFrame {
         btnManageGuests.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               new PersonManagerWindow(0, btnManageGuests).setVisible(true);
+               new PersonManagerWindow(0, btnUpdate).setVisible(true);
             }
         });
 
