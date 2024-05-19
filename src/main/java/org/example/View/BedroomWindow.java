@@ -37,6 +37,7 @@ public class BedroomWindow extends JFrame {
     private JTable tableGuests;
     private JTable tableProducts;
     private JTable tableLaundry;
+    private JTextField textFieldDiscount;
 
     /**
      * Launch the application.
@@ -292,7 +293,7 @@ public class BedroomWindow extends JFrame {
         panel_2.setLayout(gl_panel_2);
         panel_1_1.setLayout(gl_panel_1_1);
 
-        JScrollPane scrollPane_1_1 = new JScrollPane();
+        JScrollPane scrollPaneGuests = new JScrollPane();
 
         JLabel lblCheckIn = new JLabel("Check In");
 
@@ -305,40 +306,52 @@ public class BedroomWindow extends JFrame {
         btnDoneStay.setForeground(Color.WHITE);
         btnDoneStay.setBackground(new Color(0, 128, 192));
 
-        JCheckBox isPaid = new JCheckBox("Diarias já foram pagas na reserva");
+        JCheckBox cbDiscount = new JCheckBox("Aplicar descontos");
 
 
         JPanel panel_2_1 = new JPanel();
         panel_2_1.setBackground(new Color(215, 179, 11));
 
-        JLabel lblNewLabel_1_2 = new JLabel("Total:  R$");
-        lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 22));
+        JLabel lblTotalRs = new JLabel("Total:  R$");
+        lblTotalRs.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
         JLabel lblStayValue = new JLabel("150,00");
         lblStayValue.setFont(new Font("Tahoma", Font.PLAIN, 22));
+
+        JLabel lblNightValue = new JLabel("Valor diária                R$");
+
+        JLabel lblNightV = new JLabel("0,00");
         GroupLayout gl_panel_2_1 = new GroupLayout(panel_2_1);
         gl_panel_2_1.setHorizontalGroup(
                 gl_panel_2_1.createParallelGroup(Alignment.LEADING)
-                        .addGap(0, 272, Short.MAX_VALUE)
-                        .addGroup(Alignment.TRAILING, gl_panel_2_1.createSequentialGroup()
-                                .addGap(30)
-                                .addComponent(lblNewLabel_1_2)
-                                .addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                                .addComponent(lblStayValue, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
-                                .addGap(20))
+                        .addGroup(gl_panel_2_1.createSequentialGroup()
+                                .addGroup(gl_panel_2_1.createParallelGroup(Alignment.LEADING)
+                                        .addGroup(gl_panel_2_1.createSequentialGroup()
+                                                .addGap(19)
+                                                .addComponent(lblTotalRs)
+                                                .addPreferredGap(ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                                                .addComponent(lblStayValue, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(Alignment.TRAILING, gl_panel_2_1.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(lblNightValue, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(lblNightV, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap())
         );
         gl_panel_2_1.setVerticalGroup(
-                gl_panel_2_1.createParallelGroup(Alignment.LEADING)
-                        .addGap(0, 49, Short.MAX_VALUE)
+                gl_panel_2_1.createParallelGroup(Alignment.TRAILING)
                         .addGroup(gl_panel_2_1.createSequentialGroup()
-                                .addContainerGap()
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(gl_panel_2_1.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(lblStayValue, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblNewLabel_1_2))
-                                .addContainerGap(12, Short.MAX_VALUE))
+                                        .addComponent(lblNightV)
+                                        .addComponent(lblNightValue))
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
+                                .addGroup(gl_panel_2_1.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(lblTotalRs)
+                                        .addComponent(lblStayValue, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
         );
 
-        isChecked(isPaid, lblStayValue);
+        isChecked(cbDiscount, lblStayValue);
 
         panel_2_1.setLayout(gl_panel_2_1);
 
@@ -351,9 +364,16 @@ public class BedroomWindow extends JFrame {
         JButton btnRemoveGuest = new JButton("-  Remover");
         btnRemoveGuest.setForeground(Color.WHITE);
         btnRemoveGuest.setBackground(new Color(128, 0, 0));
+
+        textFieldDiscount = new JTextField();
+        textFieldDiscount.setColumns(10);
+
+        JLabel lblRs = new JLabel("R$");
+
+        JLabel lblDesconto_1 = new JLabel("Desconto");
         GroupLayout gl_panel_1 = new GroupLayout(panel_1);
         gl_panel_1.setHorizontalGroup(
-                gl_panel_1.createParallelGroup(Alignment.LEADING)
+                gl_panel_1.createParallelGroup(Alignment.TRAILING)
                         .addGroup(gl_panel_1.createSequentialGroup()
                                 .addGap(34)
                                 .addComponent(lblCheckIn, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
@@ -370,23 +390,35 @@ public class BedroomWindow extends JFrame {
                                 .addGap(87))
                         .addGroup(gl_panel_1.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                .addContainerGap())
-                        .addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-                                        .addComponent(scrollPane_1_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                        .addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
-                                                .addComponent(dateCheckIn, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, Short.MAX_VALUE)
-                                                .addComponent(dateCheckOut, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(isPaid, Alignment.LEADING))
+                                .addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(btnRemoveGuest, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                                 .addContainerGap())
                         .addGroup(gl_panel_1.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(btnRemoveGuest, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                                .addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(scrollPaneGuests, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                                        .addGroup(gl_panel_1.createSequentialGroup()
+                                                .addComponent(dateCheckIn, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                                .addComponent(dateCheckOut, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(gl_panel_1.createSequentialGroup()
+                                                .addComponent(cbDiscount)
+                                                .addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                                                .addComponent(lblRs, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(textFieldDiscount, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap())
+                        .addGroup(gl_panel_1.createSequentialGroup()
+                                .addContainerGap()
+                                .addContainerGap(179, Short.MAX_VALUE))
+                        .addGroup(gl_panel_1.createSequentialGroup()
+                                .addContainerGap(207, Short.MAX_VALUE)
+                                .addComponent(lblDesconto_1, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                        .addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         gl_panel_1.setVerticalGroup(
@@ -395,8 +427,9 @@ public class BedroomWindow extends JFrame {
                                 .addContainerGap()
                                 .addComponent(lblNewLabel)
                                 .addGap(8)
-                                .addComponent(scrollPane_1_1, GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(scrollPaneGuests, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
+                                .addGap(18)
+                                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(btnAdd)
                                         .addComponent(btnRemoveGuest))
@@ -409,17 +442,23 @@ public class BedroomWindow extends JFrame {
                                         .addComponent(dateCheckOut, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(dateCheckIn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addGap(14)
-                                .addComponent(panel_2_1, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
-                                .addComponent(isPaid)
+                                .addComponent(panel_2_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(lblDesconto_1)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(cbDiscount)
+                                        .addComponent(textFieldDiscount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblRs))
                                 .addGap(18)
                                 .addComponent(btnDoneStay)
                                 .addContainerGap())
         );
+
         List<PersonEntity> guests = BedroomService.loadAllInBedroom(bedroomNumber);
         DefaultTableModel modelGuests = PersonService.createPeopleTable(guests);
         tableGuests = new JTable();
-        scrollPane_1_1.setViewportView(tableGuests);
+        scrollPaneGuests.setViewportView(tableGuests);
         panel_1.setLayout(gl_panel_1);
         tableGuests.setModel(modelGuests);
         formatTableStandard(tableGuests);
