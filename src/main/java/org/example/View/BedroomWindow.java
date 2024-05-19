@@ -24,7 +24,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -38,6 +45,7 @@ public class BedroomWindow extends JFrame {
     private JTable tableProducts;
     private JTable tableLaundry;
     private JTextField textFieldDiscount;
+    private long[] daysDifference = {0};
 
     /**
      * Launch the application.
@@ -587,6 +595,23 @@ public class BedroomWindow extends JFrame {
                 }
             }
         });
+
+        dateCheckOut.addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Date checkInDate = dateCheckIn.getDate();
+                Date checkOutDate = (Date) evt.getNewValue();
+
+                if (checkInDate != null && checkOutDate != null){
+                    LocalDate checkInLocalDate = checkInDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate checkOutLocalDate = checkOutDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                    daysDifference[0] = ChronoUnit.DAYS.between(checkInLocalDate, checkOutLocalDate);
+
+                    System.out.println("A diferença em dias é: " + daysDifference[0]);
+                }
+            }
+        });
     }
 
     public void isChecked(JCheckBox checkBox, JLabel label) {
@@ -607,6 +632,5 @@ public class BedroomWindow extends JFrame {
         table.getColumnModel().getColumn(4).setPreferredWidth(0); // Quarto
         table.getColumnModel().getColumn(5).setPreferredWidth(298); // Empresa
         table.getColumnModel().getColumn(6).setPreferredWidth(170); // Cpf
-        //table.getColumnModel().getColumn(6).setCellRenderer(new CellRenderer(cpfFormatter)); // Cpf
     }
 }
