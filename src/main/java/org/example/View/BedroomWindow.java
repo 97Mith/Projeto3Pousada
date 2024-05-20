@@ -44,8 +44,9 @@ public class BedroomWindow extends JFrame {
     private JTable tableGuests;
     private JTable tableProducts;
     private JTable tableLaundry;
-    private JTextField textFieldDiscount;
     private long[] daysDifference = {0};
+    private double discount = 0;
+    //TODO criar entidade de estada
 
     /**
      * Launch the application.
@@ -77,6 +78,7 @@ public class BedroomWindow extends JFrame {
 
         BedroomEntity bedroomEntity = BedroomService.getById(bedroomNumber);
         Integer capacity = bedroomEntity.getCapacity();
+        double bedroomValue = bedroomEntity.getValue();
 
         JPanel panel = new JPanel();
         panel.setBackground(new Color(0, 128, 255));
@@ -137,7 +139,7 @@ public class BedroomWindow extends JFrame {
         JLabel lblNewLabel_1_3 = new JLabel("Total:  R$");
         lblNewLabel_1_3.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
-        JLabel lblLaundryValue = new JLabel("150,00");
+        JLabel lblLaundryValue = new JLabel("0,00");
         lblLaundryValue.setFont(new Font("Tahoma", Font.PLAIN, 22));
         GroupLayout gl_panel_2_2 = new GroupLayout(panel_2_2);
         gl_panel_2_2.setHorizontalGroup(
@@ -277,7 +279,7 @@ public class BedroomWindow extends JFrame {
         JLabel lblNewLabel_1 = new JLabel("Total:  R$");
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
-        JLabel lblProductValue = new JLabel("150,00");
+        JLabel lblProductValue = new JLabel("0,00");
         lblProductValue.setFont(new Font("Tahoma", Font.PLAIN, 22));
         GroupLayout gl_panel_2 = new GroupLayout(panel_2);
         gl_panel_2.setHorizontalGroup(
@@ -314,8 +316,6 @@ public class BedroomWindow extends JFrame {
         btnDoneStay.setForeground(Color.WHITE);
         btnDoneStay.setBackground(new Color(0, 128, 192));
 
-        JCheckBox cbDiscount = new JCheckBox("Aplicar descontos");
-
 
         JPanel panel_2_1 = new JPanel();
         panel_2_1.setBackground(new Color(215, 179, 11));
@@ -323,12 +323,13 @@ public class BedroomWindow extends JFrame {
         JLabel lblTotalRs = new JLabel("Total:  R$");
         lblTotalRs.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
-        JLabel lblStayValue = new JLabel("150,00");
+        JLabel lblStayValue = new JLabel("0,00");
         lblStayValue.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
         JLabel lblNightValue = new JLabel("Valor diária                R$");
 
-        JLabel lblNightV = new JLabel("0,00");
+        JLabel lblNightV = new JLabel(String.valueOf(bedroomValue));
+
         GroupLayout gl_panel_2_1 = new GroupLayout(panel_2_1);
         gl_panel_2_1.setHorizontalGroup(
                 gl_panel_2_1.createParallelGroup(Alignment.LEADING)
@@ -359,7 +360,7 @@ public class BedroomWindow extends JFrame {
                                         .addComponent(lblStayValue, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
         );
 
-        isChecked(cbDiscount, lblStayValue);
+
 
         panel_2_1.setLayout(gl_panel_2_1);
 
@@ -373,12 +374,8 @@ public class BedroomWindow extends JFrame {
         btnRemoveGuest.setForeground(Color.WHITE);
         btnRemoveGuest.setBackground(new Color(128, 0, 0));
 
-        textFieldDiscount = new JTextField();
-        textFieldDiscount.setColumns(10);
 
-        JLabel lblRs = new JLabel("R$");
 
-        JLabel lblDesconto_1 = new JLabel("Desconto");
         GroupLayout gl_panel_1 = new GroupLayout(panel_1);
         gl_panel_1.setHorizontalGroup(
                 gl_panel_1.createParallelGroup(Alignment.TRAILING)
@@ -411,18 +408,14 @@ public class BedroomWindow extends JFrame {
                                                 .addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                                                 .addComponent(dateCheckOut, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
                                         .addGroup(gl_panel_1.createSequentialGroup()
-                                                .addComponent(cbDiscount)
                                                 .addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                                                .addComponent(lblRs, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(textFieldDiscount, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)))
+                                                .addPreferredGap(ComponentPlacement.RELATED)))
                                 .addContainerGap())
                         .addGroup(gl_panel_1.createSequentialGroup()
                                 .addContainerGap()
                                 .addContainerGap(179, Short.MAX_VALUE))
                         .addGroup(gl_panel_1.createSequentialGroup()
                                 .addContainerGap(207, Short.MAX_VALUE)
-                                .addComponent(lblDesconto_1, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                         .addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
                                 .addContainerGap()
@@ -452,12 +445,8 @@ public class BedroomWindow extends JFrame {
                                 .addGap(14)
                                 .addComponent(panel_2_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(lblDesconto_1)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(cbDiscount)
-                                        .addComponent(textFieldDiscount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblRs))
+                                .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE))
                                 .addGap(18)
                                 .addComponent(btnDoneStay)
                                 .addContainerGap())
@@ -526,7 +515,6 @@ public class BedroomWindow extends JFrame {
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO fazer ele ler o atributo capacity
                 if(guests.size() > capacity - 1 ){
                     JOptionPane.showMessageDialog(
                             null, "O quarto está lotado.",
@@ -577,6 +565,8 @@ public class BedroomWindow extends JFrame {
         btnAddCloath.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                assert company != null;
+                System.out.println(company.getId());
                 Integer companyId = company.getId();
                 new AddItemsWindow(companyId, guests, true, btnUpdate).setVisible(true);
             }
@@ -596,6 +586,7 @@ public class BedroomWindow extends JFrame {
             }
         });
 
+        double finalBedroomValue = bedroomValue;
         dateCheckOut.addPropertyChangeListener("date", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -609,20 +600,16 @@ public class BedroomWindow extends JFrame {
                     daysDifference[0] = ChronoUnit.DAYS.between(checkInLocalDate, checkOutLocalDate);
 
                     System.out.println("A diferença em dias é: " + daysDifference[0]);
+
+                    double totalStaying;
+                    totalStaying = daysDifference[0] * finalBedroomValue;
+
+                    lblStayValue.setText(String.valueOf(totalStaying));
                 }
             }
         });
     }
 
-    public void isChecked(JCheckBox checkBox, JLabel label) {
-        checkBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    label.setText("0,00");
-                }
-            }
-        });
-    }
     public static void formatTableStandard(JTable table){
         table.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
         table.getColumnModel().getColumn(1).setPreferredWidth(230); // Nome

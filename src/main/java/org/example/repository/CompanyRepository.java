@@ -85,8 +85,13 @@ public class CompanyRepository {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("unit-jpa");
             EntityManager em = emf.createEntityManager();
+            CompanyEntity company;
 
-            return em.find(CompanyEntity.class, name);
+            company = em.createQuery("SELECT c FROM CompanyEntity c WHERE c.name = :name", CompanyEntity.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+
+            return company;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

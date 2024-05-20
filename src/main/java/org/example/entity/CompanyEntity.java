@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class CompanyEntity implements Serializable {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Integer id;
+    public Integer id;
     @Column(nullable = false)
     public String name;
     @Column(nullable = false)
